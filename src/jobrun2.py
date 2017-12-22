@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/opt/local/bin/python
 # encoding: utf-8
 '''
 jobrun2 -- shortdesc
@@ -28,7 +28,7 @@ __version__ = 0.1
 __date__ = '2017-12-10'
 __updated__ = '2017-12-10'
 
-DEBUG = 1
+DEBUG = 0
 TESTRUN = 0
 PROFILE = 0
 
@@ -72,11 +72,15 @@ USAGE
     try:
         # Setup argument parser
         parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
-        parser.add_argument("-c","--configfile", default="config.yml", help="use config file, default is config.yml in working dir")
-        parser.add_argument("-f","--filelog", action="store", help="Write List of CSV files and information if ommitted write file named same as job card" )
+        parser.add_argument("-c","--configfile", default="config.yaml", help="use config file, default is config.yml in working dir")
+        parser.add_argument("-l","--log", action="store", help="Write List of CSV files and information if ommitted write file named same as job card" )
+        parser.add_argument("-j","--jobcard", action="store", help="job card" )
         parser.add_argument("-n","--noexec", action="store_true", help="Do not run commands on the OS; echo the command on the OS only" )
         parser.add_argument("-t","--test", action="store_true", help="Test/Validate the Jobcard and exit" )
-        parser.add_argument("-d","--debug", action="store_true", help="set the debug level [INFO, WARN, ERROR, CRITICAL, DEBUG" )
+        parser.add_argument("-d","--debug", action="store", help="set the debug level [INFO, WARN, ERROR, CRITICAL, DEBUG" )
+        parser.add_argument("-xp","--noproduct", action="store_true", help="Don't build products" )
+        parser.add_argument("-xc","--nocomponent", action="store_true", help="Don't build components" )
+        
  
         # Process arguments
         args = parser.parse_args()
@@ -92,6 +96,10 @@ USAGE
         sys.stderr.write(program_name + ": " + repr(e) + "\n")
         sys.stderr.write(indent + "  for help use --help")
         return 2
+
+    # Start Main Code
+    print args
+
 
 if __name__ == "__main__":
     if DEBUG:
