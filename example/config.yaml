@@ -23,12 +23,14 @@ codec:
   
 
 default:
+  mount: /edge
   assembly: /edge/Assembly
   finish: /edge/Finished
   scratch: /edge/Scratch
   source: /edge/EdgeSource01
   deliveries: /edge/Delivery
   templates: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard
+  volume: ./example/volume.yaml
 
 
 # Component Defaults
@@ -54,31 +56,33 @@ video:
   # Suffix Settings
   transcode_suffix: _transcode
   assembly_suffix: _assembly
-  module: video
+  module: noaction
   
 capture:
-  module: capture
+  module: noaction
 
-boxcover:
-  module: boxcover
   
 text:
-  module: maketext
+  module: noaction
   
+bookimg:
+  module: noaction
   
+photoset:
+  module: noaction
+  
+compliance_2257:
+  module: noaction  
 
-#Product Defaults
+scenethumb:
+  module: noaction  
+
+videoinfo:
+  module: noaction  
+  
+promoimg:
+  module: noaction  
  
-clips4sale:
-  ftpsite: 172.16.1.128
-  edge001: MyPassword
-  edge002: AnotherPassword
-  edge003: YetAnotherPassword
-
-flickrocket:  
-  username: username
-  password: password
-    
 boxcover:
   font: /Library/Fonts/Skia.ttf
   star_size: 150
@@ -88,6 +92,41 @@ boxcover:
   title_size: 160
   title_location: right 
   font_color: white
+  module: noaction
+
+#Product Defaults
+ 
+clips4sale:
+  ftpsite: 172.16.1.128
+  edge001: MyPassword
+  edge002: AnotherPassword
+  edge003: YetAnotherPassword
+  module: noaction
+
+flickrocket:  
+  username: username
+  password: password
+  module: noaction
+  
+aebn:
+  module: noaction
+  
+ebay:
+  module: noaction
+
+hotmovies:
+  module: noaction
+
+dvd:
+  module: noaction
+  
+book:
+  module: noaction
+  
+picticon:
+  module: noaction
+    
+
   
 
     

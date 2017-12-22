@@ -17,8 +17,19 @@ It defines classes_and_methods
 @deffield    updated: Updated
 '''
 
-import sys
+
+import yaml
+import subprocess
 import os
+import sys
+import argparse
+import shlex
+import datetime
+import importlib
+import task
+
+
+
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
@@ -72,9 +83,9 @@ USAGE
     try:
         # Setup argument parser
         parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
-        parser.add_argument("-c","--configfile", default="config.yaml", help="use config file, default is config.yml in working dir")
-        parser.add_argument("-l","--log", action="store", help="Write List of CSV files and information if ommitted write file named same as job card" )
-        parser.add_argument("-j","--jobcard", action="store", help="job card" )
+        parser.add_argument("-c","--configfile", dest="config", default="config.yaml", help="use config file, default is config.yml in working dir")
+        parser.add_argument("-l","--log", action="store", help="Write List of CSV files and information if ommitted write file named same as task card" )
+        parser.add_argument("-j","--jobcard", action="store", help="task card" )
         parser.add_argument("-n","--noexec", action="store_true", help="Do not run commands on the OS; echo the command on the OS only" )
         parser.add_argument("-t","--test", action="store_true", help="Test/Validate the Jobcard and exit" )
         parser.add_argument("-d","--debug", action="store", help="set the debug level [INFO, WARN, ERROR, CRITICAL, DEBUG" )
@@ -98,9 +109,95 @@ USAGE
         return 2
 
     # Start Main Code
-    print args
+    Error = False
+    #===============================================================================
+    # Setup  Logging
+    #===============================================================================
+    import logging
+    import logging.config 
+    logger = logging.getLogger(__name__)
+    
+    if not args.log == None:
+        
+        logging.basicConfig(filename=args.log, disable_existing_loggers=False,format='%(asctime)s %(name)s:%(levelname)s:%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=args.debug)
+    else:
+        logging.basicConfig(disable_existing_loggers=False,format='%(asctime)s %(name)s:%(levelname)s:%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=args.debug)
+    
+    logger.info("ARGS:" + str(args))
+        
+    # Check for minimum requirements
+    if args.jobcard == None:
+        logger.error("Please provide a valid Job card: this is required")
+        print parser.parse_args(['-h'])
+        exit(1)
+    else:
+        if os.path.isfile(args.jobcard):
+            logger.info("Job Card Exists: " + args.jobcard)
+            job = open(args.jobcard,'r')
+            jobcard = yaml.load(job)
+        else:
+            logger.error("Job card missing")
+            print parser.parse_args(['-h'])
+            exit(1)
 
+    if os.path.isfile(args.config):
+        logger.info("Config file exists" + args.config)
+        cfg = open(args.config,'r')
+        config = yaml.load(cfg)
+    else:
+        logger.error("Missing Config File" + args.config)
+        print parser.parse_args(['-h'])
+        exit(2) 
 
+    volume_list = config['default']['volume'] if 'volume' in config['default'] else None
+    if volume_list == None:
+        logger.error("Missing Volume List")
+        logger.info("Check config file for proper configuration")
+    elif not os.path.isfile(volume_list):
+        logger.error("Bad or malformed Volume List")
+        logger.info("Check config file for proper configuration")
+    else:
+        vol = open(volume_list, 'r')
+        volume = yaml.load(vol)
+        
+    
+
+    product = task.makeList(jobcard, 'product')
+    logger.info("Products to create: " + str(product))
+    component = task.makeList(jobcard, 'component')
+    logger.info("Components to create: " + str(component))
+    
+    # Evaluate the Components
+    for test_component in component:
+        #logger.info("Testing Component " + str(test_component))
+        myError = task.validateitem(config, jobcard, volume, test_component)
+        Error = myError if Error is False else True
+    
+    
+    
+    
+    if Error:
+        logger.error("Validation Failed")
+        logger.error("Fix errors and re-run")
+        exit(1)
+    
+    if args.test:
+        logger.warn("Validation test only")
+        exit(0)
+    
+    
+    logger.info("Program run completed")
+    if Error:
+        logger.error("Program completed with errors")
+    else:
+        logger.info("Program completed without errors")
+    return Error
+    
+    
+    
+    
+    
+    
 if __name__ == "__main__":
     if DEBUG:
         sys.argv.append("-h")

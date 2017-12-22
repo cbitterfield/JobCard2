@@ -59,7 +59,7 @@ capture.1:
      frame_every: 30
      thumbnail: true
      watermark: true
-     out_dir: images
+     dir: images
      suffix: _capture
      name: GMCZ0022_VID
      ext: .jpg
@@ -68,7 +68,7 @@ capture.1:
 bookimg:
      type: component
      action: produce
-     src:
+     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_cover_3724x5296.jpg
 
      
 boxcover: 
@@ -112,14 +112,15 @@ photoset.1:
      watermark: true
  
 videoinfo:
-     type: component
+     type: sub-component
      action: produce
      name: info 
      dir: video
 
 thumbnails: 
      type: sub-component
-     size: 96
+     set_width: 96
+     set_height: 96
      dir: thumbs
      suffix: _T
      ext: .jpg
@@ -139,7 +140,8 @@ scenethumb:
      type: component
      action: produce
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/scenethumb/GMCZ0022_DONNA_BELL__CHOKY_ICE_32.jpg
-     size: 96
+     set_width: 96
+     set_height: 96
      dir: promo2
      suffix: _scene_T
      prefix: edge0022
@@ -149,7 +151,7 @@ scenethumb:
 text.description: 
      type: component
      action: produce
-     src: templates/description_template.txt
+     src: template/description_template.txt
      suffix: _description
      ext: .txt
 
@@ -157,7 +159,7 @@ text.description:
 text.ebay: 
      type: component
      action: produce
-     src: templates/ebay_template.txt
+     src: template/ebay_template.txt
      suffix: _ebay
      dir: product
      ext: .txt
@@ -165,7 +167,7 @@ text.ebay:
 text.compliance: 
      type: component
      action: produce
-     src: templates/compliance_template.txt
+     src: template/compliance_template.txt
      suffix: _compliance
      ext: .txt
      name: GMCZ0022_BOOK
@@ -173,7 +175,7 @@ text.compliance:
 text.clips4sale:
      type: component
      action: produce
-     src: templates/clips4sale_template.txt
+     src: template/clips4sale_template.txt
      suffix: _clips4sale
      ext: .txt 
 
@@ -191,30 +193,30 @@ compliance_2257:
 # Set components as needed true or false
 
 clips4sale: 
+     type: product
      account: edge001
      boxcover: False
      promoimg: False 
-     video1: True
+     video.1: True
      name: clips4sale
-     clips4sale_txt: true
-     module: product
-     map_video1: clips
+     text.clips4sale: true
+     map_video.1: clips
      map_promoimg: clip_images
      map_boxcover: clip_images
      map_scenethumb: clip_images
      
 
 ebay: 
+     type: product
      photoset1: false
      scenethumb: false
-     video1: true
-     capture1: true
+     video.1: true
+     capture.1: true
      promoimg: false
      boxcover: false
-     description_txt: true
-     ebay_txt: true
+     text.description: true
+     text.ebay: true
      name: ebay
-     module: product
      map_photoset: photos
      map_promoimg: promo
      map_photoset1: photos/set1
@@ -222,29 +224,30 @@ ebay:
      map_text.ebay: ./
 
 dvd: 
-     photoset1: true
-     video1: true
+     type: product
+     photoset.1: true
+     video.1: true
      capture: true
      boxcover: true
      compliance_txt: true
-     out_dir: dvd
-     module: noaction
+     dir: dvd
+     
 
 picticon: 
+     type: product
      photoset1: true
-     video1: true
+     video.1: true
      thumbnails: true
      scenethumb: true
-     description_txt: exists
-     out_dir: web
-     module: noaction
+     text.description: exists
+     dir: web
 
 aebn: 
-     out_dir: aebn
-     video1: true
+     type: product
+     dir: aebn
+     video.1: true
      boxcover: true
      2257: true
-     module: noaction
      map_video1: video
      map_promoimg: video_images
      map_boxcover: video_images
@@ -252,31 +255,34 @@ aebn:
      
 
 hotmovies: 
-     out_dir: hotmovies
-     video1: true
+     type: product
+     dir: hotmovies
+     video.1: true
      boxcover: true
      2257: true
-     module: noaction
      map_video1: video
      map_promoimg: video_images
      map_boxcover: video_images
      map_scenethumb: video_images
 
 flickrocket: 
-     out_dir: flickrocket
-     video1: true
+     type: product
+     dir: flickrocket
+     video.1: true
      boxcover: true
      promo: true
-     module: product
      map_video1: video
      map_promoimg: video_images
      map_boxcover: video_images
      map_scenethumb: video_images
 
 book: 
-     out_dir: book
+     type: product
+     dir: book
      book: true
      pict1: true
      pict2: true
      description: true
-     module: noaction
+
+error:
+    test: problem
