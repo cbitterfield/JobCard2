@@ -1,0 +1,77 @@
+locations:
+  convert: /opt/local/bin/convert
+  ffmpeg: /opt/local/bin/ffmpeg
+  curl: /opt/local/bin/curl
+  flickrocket: /bin/echo
+  ffprobe: /opt/local/bin/ffprobe
+  mogrify: /opt/local/bin/mogrify
+  mkisofs: /opt/local/bin/mkisofs
+  dvdauthor: /opt/local/bin/dvdauthor
+  atomicparsley: /opt/local/bin/AtomicParsley
+  md5: /sbin/md5
+  
+codec:
+  mp4_decode: h264
+  mp4_encode: h264_videotoolbox
+  mp4_simple: mpeg4
+  mp4_jpeg: mjpeg
+  mp4_accel: '-hwaccel videotoolbox'
+  mp4_threads: '-threads 8'
+  mp4_scalefilter: scale
+ 
+ 
+  
+
+default:
+  assembly: /edge/Assembly
+  finish: /edge/Finished
+  scratch: /edge/Scratch
+  source: /edge/EdgeSource01
+  deliveries: /edge/Delivery
+  templates: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard
+
+
+
+
+compliance:
+  licensedefault: Edge Interactive  
+  template: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard/example/compliance_template.txt
+  preview_color: DarkMagenta
+  preview_font_color: White
+  preview_font_size: 48
+  preview_x: 100
+  preview_y: 100
+  preview_suffix: _title
+  preview_ext: .mp4
+  preview_font: /Library/Fonts/Arial.ttf
+  compliance_color: DarkMagenta
+  compliance_font: /Library/Fonts/Arial.ttf
+  compliance_text_color: White
+  # Text Size Based on 1920x1080; automatically scaled
+  compliance_text_size: 30
+  compliance_suffix: _compliance
+  compliance_ext: .mp4
+
+ 
+clips4sale:
+  ftpsite: 172.16.1.128
+  edge001: MyPassword
+  edge002: AnotherPassword
+  edge003: YetAnotherPassword
+
+flickrocket:  
+  username: username
+  password: password
+    
+boxcover:
+  font: /Library/Fonts/Skia.ttf
+  star_size: 150
+  support_size: 120
+  shorttitle_size: 150
+  partno_size: 150
+  title_size: 160
+  title_location: right 
+  font_color: white
+  
+
+    
