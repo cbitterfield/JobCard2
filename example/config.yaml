@@ -1,4 +1,4 @@
-locations:
+programs:
   convert: /opt/local/bin/convert
   ffmpeg: /opt/local/bin/ffmpeg
   curl: /opt/local/bin/curl
@@ -8,7 +8,7 @@ locations:
   mkisofs: /opt/local/bin/mkisofs
   dvdauthor: /opt/local/bin/dvdauthor
   atomicparsley: /opt/local/bin/AtomicParsley
-  md5: /sbin/md5
+  
   
 codec:
   mp4_decode: h264
@@ -31,27 +31,43 @@ default:
   templates: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard
 
 
-
-
-compliance:
-  licensedefault: Edge Interactive  
-  template: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard/example/compliance_template.txt
-  preview_color: DarkMagenta
-  preview_font_color: White
-  preview_font_size: 48
-  preview_x: 100
-  preview_y: 100
-  preview_suffix: _title
-  preview_ext: .mp4
-  preview_font: /Library/Fonts/Arial.ttf
+# Component Defaults
+  
+video:
+  title_color: DarkMagenta
+  title_font_color: White
+  title_font_size: 48
+  title_x: 100
+  title_y: 100
+  title_suffix: _title
+  title_ext: .mp4
+  title_font: /Library/Fonts/Arial.ttf
+  # Text Size Based on 1920x1080; automatically scaled
+  compliance_license: Edge Interactive  
+  compliance_template: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard/example/compliance_template.txt
   compliance_color: DarkMagenta
   compliance_font: /Library/Fonts/Arial.ttf
   compliance_text_color: White
-  # Text Size Based on 1920x1080; automatically scaled
   compliance_text_size: 30
   compliance_suffix: _compliance
   compliance_ext: .mp4
+  # Suffix Settings
+  transcode_suffix: _transcode
+  assembly_suffix: _assembly
+  module: video
+  
+capture:
+  module: capture
 
+boxcover:
+  module: boxcover
+  
+text:
+  module: maketext
+  
+  
+
+#Product Defaults
  
 clips4sale:
   ftpsite: 172.16.1.128
