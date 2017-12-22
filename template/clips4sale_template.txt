@@ -1,0 +1,16 @@
+Clips4Sale: Product
+
+Clip Title: $SHORTTITLE $TITLE $EDGEID
+
+Clip Description: $DESCRIPTION
+
+Clip Category: $SHORTTILE
+
+Related Categories:
+
+Keywords: $SHORTTITLE $STAR $SKIN
+
+Clip Name: $EDGEID_$VWIDTH_$VHEIGHT_$VKBPS.mp4
+
+
+
