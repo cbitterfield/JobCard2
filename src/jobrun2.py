@@ -42,6 +42,7 @@ __updated__ = '2017-12-10'
 DEBUG = 0
 TESTRUN = 0
 PROFILE = 0
+DEST_VOL = "assembly"
 
 class CLIError(Exception):
     '''Generic exception to raise and log different fatal errors.'''
@@ -91,6 +92,7 @@ USAGE
         parser.add_argument("-d","--debug", action="store", help="set the debug level [INFO, WARN, ERROR, CRITICAL, DEBUG" )
         parser.add_argument("-xp","--noproduct", action="store_true", help="Don't build products" )
         parser.add_argument("-xc","--nocomponent", action="store_true", help="Don't build components" )
+        parser.add_argument("-sc","--signcomponent", dest="single", action="store", help="Only work on a single component, adds -xp by default")
         
  
         # Process arguments
@@ -159,19 +161,59 @@ USAGE
     else:
         vol = open(volume_list, 'r')
         volume = yaml.load(vol)
-        
+    
+    
+            
     
 
     product = task.makeList(jobcard, 'product')
     logger.info("Products to create: " + str(product))
-    component = task.makeList(jobcard, 'component')
-    logger.info("Components to create: " + str(component))
+    
+    if args.single:
+        component = []
+        logger.info("Running in single Component Mode for component " + str(args.single))
+        component.append(args.single)
+    else:
+        component = task.makeList(jobcard, 'component')
+        logger.info("Components to create: " + str(component))
     
     # Evaluate the Components
     for test_component in component:
         #logger.info("Testing Component " + str(test_component))
         myError = task.validateitem(config, jobcard, volume, test_component)
         Error = myError if Error is False else True
+    
+    
+    # Run Component Jobs
+    if not args.nocomponent:
+        logger.info("Running component jobs")
+        for component in sorted(component):   
+            try:
+                component, component_modifier = test_component.split(".")
+                item_module = config[component][""] if "module" in config[component] else None
+            except Exception as e:  
+                component = test_component
+                item_module = config[component]["module"] if "module" in config[component] else None
+                
+            logger.warning("Processing Component " + str(component))
+            run_module = jobcard[component]['module']
+            myModule = importlib.import_module(item_module)
+            jobflag = jobcard['component'][component]     
+            if jobflag == 'produce':
+                myError = myModule.produce(DEST_VOL,object, jobcard, config, volume, args.noexec)
+            elif jobflag == 'exists':
+                myError = myModule.exists(DEST_VOL,object, jobcard, config, volume, args.noexec)
+            else:
+                myError = myModule.ignore(DEST_VOL,object, jobcard, config, volume, args.noexec)    
+    
+            Error = myError if Error is False else True
+    
+    
+    
+    # Run Product Jobs
+    if not args.noproduct:
+        logger.info("Running product jobs")
+        
     
     
     

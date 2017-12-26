@@ -204,59 +204,66 @@ def validateitem(config, jobcard, volume, test_component):
     Error = False
     # Test for Module in config
     try:
-        component, number = test_component.split(".")
+        component, component_modifier = test_component.split(".")
+        item_action = jobcard[test_component]["action"] if "action" in jobcard[test_component] else None
     except:
         component = test_component
+        item_action = jobcard[test_component]["action"] if "action" in jobcard[test_component] else None
     logger.debug("Testing Component " + str(component))
     try:    
         module = config[component]['module'] if "module" in config[component] else None
-    except:
+    except Exception as e:
         logger.error("Problem with " + str(component) + " not registered in config")
+        logger.error("Error " + str(e))
         Error = True
         module = None
         
-    if module == None:
-        logger.error("Module for " + str(test_component) + " is missing")
-    else:
-        try:
-            myModule = importlib.import_module(module)
-        except Exception as e: 
-            logger.error(str(e))
-            logger.error(str(component) + " module " + str(module) + " failed to import check config file for correct module")
-            Error = True
-     
-    #Test source
-    try:
-        item_src = jobcard[test_component]['src'] if "src" in jobcard[test_component] else None
-    except:
-        item_src = None
-    
-    if item_src == None:
-        logger.error("Problem with " + str(test_component) + "No source file - this is a requirement")
-        Error = True   
-    else:   
-        if item_src[0] != "/":
-            logger.debug("Source - relative Path")
-            path_list = item_src.split("/")
-            item_source = config['default']['mount'] + "/" + volume[path_list[0]] + "/" + item_src
-           
+    if item_action == 'produce' or item_action == 'exists':   
+            
+        if module == None:
+            logger.error("Module for " + str(test_component) + " is missing")
             
         else:
-            logger.debug("Source - absolute Path")
-            item_source = item_src
+            try:
+                myModule = importlib.import_module(module)
+            except Exception as e: 
+                logger.error(str(e))
+                logger.error(str(component) + " module " + str(module) + " failed to import check config file for correct module")
+                Error = True
+         
+        #Test source
+        try:
+            item_src = jobcard[test_component]['src'] if "src" in jobcard[test_component] else None
+        except:
+            item_src = None
         
-                    
-        logger.info("Item " + str(test_component) + " source " + str(item_source))   
-        if os.path.exists(item_source):
-            logger.info(str(test_component) + " source exists " + str(item_source))
-            if os.path.isfile(item_source):
-                logger.debug(str(test_component) + " source " + str(item_source) + " is a file")
-            elif os.path.isdir(item_source):
-                logger.debug(str(test_component) + " source " + str(item_source) + " is a directory")
-        else:
-            logger.error(str(test_component) + " source " + str(item_source) + " does not exist")
-            Error = True
-     
+        if item_src == None:
+            logger.error("Problem with " + str(test_component) + "No source file - this is a requirement")
+            Error = True   
+        else:   
+            if item_src[0] != "/":
+                logger.debug("Source - relative Path")
+                path_list = item_src.split("/")
+                item_source = config['default']['mount'] + "/" + volume[path_list[0]] + "/" + item_src
+               
+                
+            else:
+                logger.debug("Source - absolute Path")
+                item_source = item_src
+            
+                        
+            logger.info("Item " + str(test_component) + " source " + str(item_source))   
+            if os.path.exists(item_source):
+                logger.info(str(test_component) + " source exists " + str(item_source))
+                if os.path.isfile(item_source):
+                    logger.debug(str(test_component) + " source " + str(item_source) + " is a file")
+                elif os.path.isdir(item_source):
+                    logger.debug(str(test_component) + " source " + str(item_source) + " is a directory")
+            else:
+                logger.error(str(test_component) + " source " + str(item_source) + " does not exist")
+                Error = True
+    else:
+        logger.info("Component " + str(test_component) + " is being ignored")     
             
     return Error
 

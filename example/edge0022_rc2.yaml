@@ -67,14 +67,14 @@ capture.1:
 
 bookimg:
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_cover_3724x5296.jpg
 
      
 boxcover: 
      type: component
      action: produce
-     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_cover_3724x5296.jpg
+     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_DONNA_BELL__CHOKY_ICE_22.jpg
      alignment: right
      name: boxcover
      thumbnail: False
@@ -151,7 +151,7 @@ scenethumb:
 text.description: 
      type: component
      action: produce
-     src: template/description_template.txt
+     src:   template/description_template.txt
      suffix: _description
      ext: .txt
 

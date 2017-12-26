@@ -1,0 +1,110 @@
+Job runs are configured from 2 files:
+
+1. config.yaml
+	This is all of the system wide all jobs perspective and contains information that is common for all job cards
+
+2. jobcard.yaml (Filename can be anything; the edgeid is inside the file; but the nameing convention is the edgeid)
+	This contains all of the information for each jobcard
+	It is broken into 4 sections:
+	
+		1. Clip Information
+		2. Products & Components (Control)
+		3. Components
+		4. Products	
+		
+3. Templates:
+	Template contain information related to text file creation.
+	description_txt: template is for the product
+	compliance_txt: template is for the compliance trailer
+	clips4sale_txt: template is for the product clips for sale
+		Each product can use a template. This is for the purpose of data entry in that venue.
+		
+
+4. Clip Information
+
+	Notes: Star2 is a key; it is only used if there is a co-star.
+		If you use Star2; you will need to have an appropriate template file.
+		
+		
+5. Products and Components
+	In this section you select which product will be created and which components will be created.
+	If there is a product; or a component set as a key; then there must be a corresponding section in components and products.
+	For instance; if there is a component "photoset1: ignore" there must be a component photoset. 
+	
+	Products have the valid key: produce, exsits, or ignore 
+	Components have the valid key: produce, validate, exists, or ignore
+	
+	
+6. Components
+
+Support for unlimited number of videos (information video[nnn])
+Must have entry in products and components control section.
+Video is self contained; so if there is a request for watermark (on video) it will be just for that video
+Capures configuration is set in the captures section and allows for thumbnails on the images.
+Use name: for path here; we do not use the out_dir setting; if it is set it will be appended for all videos.
+
+video1: 
+     src: PATHNAME
+     capture: true or false
+     watermark: true or false
+     size_width: 1920
+     size_height: 1080
+     size_kbps: 6000
+     name: GMCZ0023_VID [Path name for video]
+     module: processvideo
+     ext: .mp4
+     
+     
+Production Directories:
+
+[JobCard]
+	All job cards are loaded to the Jobcard Share
+		 ./jobs -> jobcards for processing
+		 ./logs -> logs of the jobcard processing. Will be named the same as the jobcard + .log
+		 ./output -> output for live code input, initially a text file named the same as the jobcard + .txt with all of the files created
+		 ./processed -> the jobcard is copied to this directory when it is finished. (the ending .success or .failure is appened for easy evaluation.)
+[Assembly]
+	[Project Name]/[PrimeDubya]/[EdgeID]
+		[Component Name] + optional [output_dir]
+		[Product Name] { for specfic output files related to a product i.e. DVD.iso or text files}		
+
+[Scratch] - Files here can be deleted after delivery to distribution outlet
+	[Project Name]/[PrimeDubya]/[EdgeID]
+			[Product name] - Assembly Area for files (like for ftp upload)
+			
+		     	
+
+Component Documentation Blocks
+	Each component can have the following key value pairs
+	
+REQUIRED:
+	type: component 
+	action: produce, exists, ignore
+	src: absolute or relative path to source media
+	
+Optional:
+
+     set_width: pixel number
+     set_height: pixel number
+     set_kbps: kilobits per second
+     timed: True or False (For images whether or not color correction is applied)
+     name: Directory where this component will place files or directory
+     dir: Sub Directory under named where this specific component will go. If there are sub-components like thumbnails or watermarks they will go under name: (+ their directory)
+     suffix: _set1 (starts with an underscore and will be added to the file name, if the component has a modifier like .1 or .ebay this will be appended automatically)
+     ext: .jpg (The extension of the final product, jpg or mpg, this is used by the converters. If PNG or another format is used, the final render will be in that format.)
+     thumbnail: True or False [ SubComponent directory is placed under name]
+     watermark: True or False [ SubComponent directory is placed under name]
+     alignment: left, center, right [used for boxcovers and watermarks]
+     
+     Optional parameters are not required if not set.
+     If the set_width, set_height are not there; the original size will be used.
+     
+     
+	
+
+
+
+
+
+	
+		
