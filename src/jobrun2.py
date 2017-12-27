@@ -1,5 +1,6 @@
+#-*- coding: utf-8 -*-
 #!/opt/local/bin/python
-# encoding: utf-8
+
 '''
 jobrun2 -- shortdesc
 

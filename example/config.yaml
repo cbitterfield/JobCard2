@@ -60,7 +60,7 @@ video:
   module: noaction
   
 capture:
-  module: noaction
+  module: capture
 
   
 text:
@@ -127,7 +127,9 @@ book:
 picticon:
   module: noaction
     
-
+watermark:
+  font: /Library/Fonts/Skia.ttf
+  copysymbol: '©'
   
 
     

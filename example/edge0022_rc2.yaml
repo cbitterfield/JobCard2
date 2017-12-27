@@ -54,7 +54,7 @@ video.2:
           
 capture.1: 
      type: component
-     action: ignore
+     action: produce
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
      frame_every: 30
      thumbnail: true
