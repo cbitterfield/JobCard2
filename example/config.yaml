@@ -1,6 +1,7 @@
 programs:
   convert: /opt/local/bin/convert
   ffmpeg: /opt/local/bin/ffmpeg
+  identify: /opt/local/bin/identify
   curl: /opt/local/bin/curl
   flickrocket: /bin/echo
   ffprobe: /opt/local/bin/ffprobe
