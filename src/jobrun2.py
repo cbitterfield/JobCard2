@@ -166,19 +166,19 @@ USAGE
             
     
 
-    product = task.makeList(jobcard, 'product')
-    logger.info("Products to create: " + str(product))
+    products = task.makeList(jobcard, 'product')
+    logger.info("Products to create: " + str(products))
     
     if args.single:
-        component = []
+        components = []
         logger.info("Running in single Component Mode for component " + str(args.single))
-        component.append(args.single)
+        components.append(args.single)
     else:
-        component = task.makeList(jobcard, 'component')
-        logger.info("Components to create: " + str(component))
+        components = task.makeList(jobcard, 'component')
+        logger.info("Components to create: " + str(components))
     
     # Evaluate the Components
-    for test_component in component:
+    for test_component in components:
         #logger.info("Testing Component " + str(test_component))
         myError = task.validateitem(config, jobcard, volume, test_component)
         Error = myError if Error is False else True
@@ -187,24 +187,23 @@ USAGE
     # Run Component Jobs
     if not args.nocomponent:
         logger.info("Running component jobs")
-        for component in sorted(component):   
+        for component in sorted(components):
+            logger.debug("component " + str(component))   
             try:
-                component, component_modifier = test_component.split(".")
-                item_module = config[component][""] if "module" in config[component] else None
+                base_component, component_modifier = component.split(".")
+                item_module = config[base_component]["module"] if "module" in config[base_component] else None
             except Exception as e:  
-                component = test_component
                 item_module = config[component]["module"] if "module" in config[component] else None
                 
-            logger.warning("Processing Component " + str(component))
-            run_module = jobcard[component]['module']
+            logger.debug("Module for production is " + str(item_module))
             myModule = importlib.import_module(item_module)
-            jobflag = jobcard['component'][component]     
+            jobflag = jobcard[component]['action']     
             if jobflag == 'produce':
-                myError = myModule.produce(DEST_VOL,object, jobcard, config, volume, args.noexec)
+                myError = myModule.produce(DEST_VOL,component, jobcard, config, volume, args.noexec)
             elif jobflag == 'exists':
-                myError = myModule.exists(DEST_VOL,object, jobcard, config, volume, args.noexec)
+                myError = myModule.exists(DEST_VOL,component, jobcard, config, volume, args.noexec)
             else:
-                myError = myModule.ignore(DEST_VOL,object, jobcard, config, volume, args.noexec)    
+                myError = myModule.ignore(DEST_VOL,component, jobcard, config, volume, args.noexec)    
     
             Error = myError if Error is False else True
     

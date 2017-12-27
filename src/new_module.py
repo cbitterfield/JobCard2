@@ -1,9 +1,19 @@
 '''
-Created on Sep 30, 2017
+newmodule -- shortdesc
 
-@author: colin
+newmodule is a description
+
+It defines classes_and_methods
+
+@author:     Colin Bitterfield
+
+@copyright:  2017 Edge Intereactive. All rights reserved.
+
+@license:    license
+
+@contact:    colin@bitterfield.com
+@deffield    updated: 12/26/2017
 '''
-
 #===============================================================================
 # Import 
 #===============================================================================
@@ -16,28 +26,7 @@ logger = logging.getLogger(__name__)
 # Additional Libraries
 from string import Template
 
-def word_wrap(string, width=80, ind1=0, ind2=0, prefix=''):
-    """ word wrapping function.
-        string: the string to wrap
-        width: the column number to wrap at
-        prefix: prefix each line with this string (goes before any indentation)
-        ind1: number of characters to indent the first line
-        ind2: number of characters to indent the rest of the lines
-    """
-    string = prefix + ind1 * " " + string
-    newstring = ""
-    while len(string) > width:
-        # find position of nearest whitespace char to the left of "width"
-        marker = width - 1
-        while not string[marker].isspace():
-            marker = marker - 1
 
-        # remove line from original string and add it to the new string
-        newline = string[0:marker] + "\n"
-        newstring = newstring + newline
-        string = prefix + ind2 * " " + string[marker + 1:]
-
-    return newstring + string
 
 
 
@@ -76,70 +65,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
         Error = True
         
     
-    #===========================================================================
-    # Clip Information
-    #===========================================================================
-    logger.debug("Set clipinfo key value pairs")
-    
-    try:    
-    # Get Clip Information 
-        clip_prime_dubya = jobcard['clipinfo']['prime_dubya']
-        clip_edgeid = jobcard['clipinfo']['edgeid']
-        clip_shorttitle = jobcard['clipinfo']['shorttitle']
-        clip_title = jobcard['clipinfo']['title']
-        clip_description = jobcard['clipinfo']['description']
-        clip_keywords = jobcard['clipinfo']['keywords']
-        clip_productiondate = jobcard['clipinfo']['productiondate']
-        clip_releasedate = jobcard['clipinfo']['releasedate']
-        clip_licensor = jobcard['clipinfo']['licensor']
-        clip_comment = jobcard['clipinfo']['comment']
-        clip_star_name = jobcard['clipinfo']['star']['name'] if "name" in jobcard['clipinfo']['star'] else ''
-        clip_star_birthdate = jobcard['clipinfo']['star']['birthdate'] if "birthdate" in jobcard['clipinfo']['star'] else None
-        clip_star_age = jobcard['clipinfo']['star']['age'] if "age" in jobcard['clipinfo']['star'] else None
-        clip_star_height = jobcard['clipinfo']['star']['height'] if "height" in jobcard['clipinfo']['star'] else None
-        clip_star_weight = jobcard['clipinfo']['star']['weight'] if "weight" in jobcard['clipinfo']['star'] else None
-        clip_star_measurements = jobcard['clipinfo']['star']['measurements'] if "measurements" in jobcard['clipinfo']['star'] else None
-        clip_star_hair = jobcard['clipinfo']['star']['hair'] if "hair" in jobcard['clipinfo']['star'] else None
-        clip_star_eyes = jobcard['clipinfo']['star']['eyes'] if "eyes" in jobcard['clipinfo']['star'] else None
-        clip_star_skin = jobcard['clipinfo']['star']['skin'] if "skin" in jobcard['clipinfo']['star'] else None
-        clip_star_birthplace = jobcard['clipinfo']['star']['birthplace'] if "birthplace" in jobcard['clipinfo']['star'] else None            
-        clip_star2 = True if "star2" in jobcard['clipinfo'] else False
-        if clip_star2:
-            logger.info("Loading Star 2")
-            clip_star2_name = jobcard['clipinfo']['star2']['name'] if "name" in jobcard['clipinfo']['star2'] else ''
-            clip_star2_birthdate = jobcard['clipinfo']['star2']['birthdate'] if "birthdate" in jobcard['clipinfo']['star2'] else None
-            clip_star2_age = jobcard['clipinfo']['star2']['age'] if "age" in jobcard['clipinfo']['star2'] else None
-            clip_star2_height = jobcard['clipinfo']['star2']['height'] if "height" in jobcard['clipinfo']['star2'] else None
-            clip_star2_weight = jobcard['clipinfo']['star2']['weight'] if "weight" in jobcard['clipinfo']['star2'] else None
-            clip_star2_measurements = jobcard['clipinfo']['star2']['measurements'] if "measurements" in jobcard['clipinfo']['star2'] else None
-            clip_star2_hair = jobcard['clipinfo']['star2']['hair'] if "hair" in jobcard['clipinfo']['star2'] else None
-            clip_star2_eyes = jobcard['clipinfo']['star2']['eyes'] if "eyes" in jobcard['clipinfo']['star2'] else None
-            clip_star2_skin = jobcard['clipinfo']['star2']['skin'] if "skin" in jobcard['clipinfo']['star2'] else None
-            clip_star2_birthplace = jobcard['clipinfo']['star2']['birthplace'] if "birthplace" in jobcard['clipinfo']['star2'] else None
-        clip_supporting_name = jobcard['clipinfo']['supporting']['name'] if "name" in jobcard['clipinfo']['supporting'] else ''
-        clip_supporting_birthdate = jobcard['clipinfo']['supporting']['birthdate'] if "birthdate" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_age = jobcard['clipinfo']['supporting']['age'] if "age" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_height = jobcard['clipinfo']['supporting']['height'] if "height" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_weight = jobcard['clipinfo']['supporting']['weight'] if "weight" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_measurements = jobcard['clipinfo']['supporting']['measurements'] if "measurements" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_hair = jobcard['clipinfo']['supporting']['hair'] if "hair" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_eyes = jobcard['clipinfo']['supporting']['eyes'] if "eyes" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_skin = jobcard['clipinfo']['supporting']['skin'] if "skin" in jobcard['clipinfo']['supporting'] else None
-        clip_supporting_birthplace = jobcard['clipinfo']['supporting']['birthplace'] if "birthplace" in jobcard['clipinfo']['supporting'] else None
-              
-        
-    except Exception as e:  
-        logger.warning("Not all clip variables set properly; exception " + str(e)) 
-        Error = True      
-    
-    # Show Clip variables
-    logger.info("Clip description " + str(clip_title) + " Edge ID: " + str(clip_edgeid))
-    logger.info("Star " + str(clip_star_name))
-    if clip_star2:
-        logger.info("Star2 " + str(clip_star2_name))
-    logger.info("Supporting: " + str(clip_supporting_name)) 
-    logger.info("Short Title: " + str(clip_shorttitle))
-    
+
     
     
     
@@ -194,8 +120,6 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     logger.info("Suffix: " + str(item_suffix))
     logger.info("Extension:" + str(item_ext))
     
-    
-   
    
 
     #===========================================================================
@@ -233,7 +157,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
 
 def exists(dest_vol,component, jobcard, config, volume, noexec):
     Error = True
-    logger.error("Not a valid action")
+    logger.info("exists action")
     return(Error)
 
 

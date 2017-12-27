@@ -64,7 +64,7 @@ capture:
 
   
 text:
-  module: noaction
+  module: maketext
   
 bookimg:
   module: noaction

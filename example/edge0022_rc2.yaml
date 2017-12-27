@@ -30,7 +30,7 @@ clipinfo:
 
 video.1:
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
      watermark: true 
      set_width: 1920
@@ -42,7 +42,7 @@ video.1:
      
 video.2:
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
      watermark: false 
      set_width: 1280
@@ -54,7 +54,7 @@ video.2:
           
 capture.1: 
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
      frame_every: 30
      thumbnail: true
@@ -73,7 +73,7 @@ bookimg:
      
 boxcover: 
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_DONNA_BELL__CHOKY_ICE_22.jpg
      alignment: right
      name: boxcover
@@ -86,7 +86,7 @@ boxcover:
 
 promoimg: 
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/Promos/GMCZ0022_Samples
      set_width: 3782
      set_height: 
@@ -98,7 +98,7 @@ promoimg:
 
 photoset.1: 
      type: component
-     action: produce
+     action: ignore
      src: C16F01-C16G00/C16G00_Finished_B70901-B70907/GMCZ/GMCZ0022_3872P_JPG/
      set_width: 3872
      set_height: 2592
@@ -113,7 +113,7 @@ photoset.1:
  
 videoinfo:
      type: sub-component
-     action: produce
+     action: ignore
      name: info 
      dir: video
 
@@ -138,7 +138,7 @@ watermark:
 
 scenethumb: 
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/scenethumb/GMCZ0022_DONNA_BELL__CHOKY_ICE_32.jpg
      set_width: 96
      set_height: 96
@@ -151,6 +151,7 @@ scenethumb:
 text.description: 
      type: component
      action: produce
+     name: GMCZ0022_BOOK
      src:   template/description_template.txt
      suffix: _description
      ext: .txt
@@ -163,6 +164,7 @@ text.ebay:
      suffix: _ebay
      dir: product
      ext: .txt
+     name: GMCZ0022_PRODUCT
 
 text.compliance: 
      type: component
@@ -178,12 +180,12 @@ text.clips4sale:
      src: template/clips4sale_template.txt
      suffix: _clips4sale
      ext: .txt 
-
+     name: GMCZ0022_PRODUCT
 
     
 compliance_2257:
     type: component
-    action: produce
+    action: ignore
     src: C16F01-C16G00/C16G00_Finished_B70901-B70907/GMCZ/GMCZ0022_2257/
     dir: 2257
     name: compliance      
