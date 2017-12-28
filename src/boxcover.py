@@ -278,6 +278,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     # Make Boxcover
     #===========================================================================
     RESIZE_IMG = "'" + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + str(boxcover_back_suffix) + item_ext +"'"
+    REMOVE_IMG = finaldestination +  "/" + str(edgeid)  + str(item_suffix) + str(boxcover_back_suffix) + item_ext
     BOX_PSD = "'"  + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + ".psd'"
     BOX_IMG = "'" + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + item_ext +"'"
     
@@ -311,6 +312,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
         command_status[command_name] = command[command_name].returncode 
         if command_status[command_name] == 0:
             logger.info(str(command_name) + " Completed, returned Status: " + str(command_status[command_name]))
+            logger.info("Removing tempfile " + str(RESIZE_IMG))
+            os.remove(REMOVE_IMG)
         else:
             logger.error(str(command_name) + "failed, with Status:"+ str(command_status[command_name]))
             Error = True

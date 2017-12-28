@@ -104,7 +104,7 @@ photoset.1:
      set_height: 2592
      timed: true
      dir: photoset
-     suffix: _set1
+     suffix: _set
      count: 36
      ext: .jpg
      name: set1
