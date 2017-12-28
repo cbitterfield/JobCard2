@@ -348,6 +348,13 @@ def copyconvert(source, destination, edgeid, ext, suffix, recursive, config, noe
                 
                 if ext == str('.' + extName):
                     logger.debug("simple copy for " + str(baseName))
+                    try:
+                        logger.debug("Copy " + copyFile  + " => " + destination + "/" + newName)
+                        shutil.copy(copyFile, destination + "/" + newName)  if not noexec else logger.info("Noexec Flag")
+                    except Exception as e: 
+                        logger.error(e)
+                        Error = True
+                    
                 else:
                     # Convert file from existing format to requested format
                     logger.debug("Convert File")

@@ -54,7 +54,7 @@ video.2:
           
 capture.1: 
      type: component
-     action: produce
+     action: ignore
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
      frame_every: 30
      thumbnail: true
@@ -73,11 +73,11 @@ bookimg:
      
 boxcover: 
      type: component
-     action: ignore
+     action: produce
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_DONNA_BELL__CHOKY_ICE_22.jpg
+     Ysrc: C16F01-C16G00/C16G00_Finished_B70901-B70907/BoxCovers/GMCZ0022_cover_3724x5296.jpg
      alignment: right
      name: boxcover
-     thumbnail: False
      suffix: _boxcover
      ext: .jpg
      set_width: 3724

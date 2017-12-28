@@ -86,14 +86,16 @@ promoimg:
  
 boxcover:
   font: /Library/Fonts/Skia.ttf
-  star_size: 150
-  support_size: 120
-  shorttitle_size: 150
+  star_size: 220
+  support_size: 160
+  shorttitle_size: 300
+  edgeid_size: 150
   partno_size: 150
-  title_size: 160
+  title_size: 200
   title_location: right 
   font_color: white
-  module: noaction
+  module: boxcover
+  back_suffix: _source
 
 #Product Defaults
  
