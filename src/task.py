@@ -492,7 +492,7 @@ def watermark(config,jobcard,finaldestination,watermark_data,pattern, noexec):
     #====================================================================
     Error = False
     command = {}
-    command_status = []
+    command_status = {}
     
     #===========================================================================
     # Get Watermark Info (If requested)
