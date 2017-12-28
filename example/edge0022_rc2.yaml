@@ -98,7 +98,7 @@ promoimg:
 
 photoset.1: 
      type: component
-     action: produce
+     action: exists
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/photoset1
      set_width: 3872
      set_height: 2592
@@ -107,8 +107,8 @@ photoset.1:
      suffix: _set
      ext: .jpg
      name: GMCZ0022_IMAGES
-     thumbnail: false
-     watermark: false
+     thumbnail: true
+     watermark: true
  
 videoinfo:
      type: sub-component

@@ -448,7 +448,7 @@ def thumbnail(config,jobcard,finaldestination,pattern, noexec):
         logger.debug("thumbnail directory will not be created")
       
 
-    CMD_TEMPLATE = "$MOGRIFY -set filename:name %[base]  -write '${THUMBDIR}/%[filename:name]${THUMBSUFFIX}${EXT}' -background white -gravity center -extent $SIZE -resize $SIZE  ${FINALDESTINATION}/${PATTERN}"         
+    CMD_TEMPLATE = "$MOGRIFY -set filename:name %[base]  -write '${THUMBDIR}/%[filename:name]${THUMBSUFFIX}${EXT}' -background white -gravity center -resize $SIZE  ${FINALDESTINATION}/${PATTERN}"         
     CMD = Template(CMD_TEMPLATE).safe_substitute(MOGRIFY=MOGRIFY, SIZE=thumbnail_size, THUMBDIR=thumbnail_destination, FINALDESTINATION=finaldestination, EXT=thumbnail_ext, THUMBSUFFIX=thumbnail_suffix,PATTERN=pattern)
     logger.debug("Thumbnail Command: " + CMD)
     
