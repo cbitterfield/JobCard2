@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 # Additional Libraries
 from string import Template
 import subprocess
+import task
 
 
 
@@ -98,14 +99,25 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     
     
     #===========================================================================
-    # Get Star Information
+    # Get minimal clip Information needed for watermarking
     #===========================================================================
-    try:
-        clip_star_name = jobcard['clipinfo']['star']['name'] if "name" in jobcard['clipinfo']['star'] else ''
+    try:    
+    # Get Clip Information 
+        clip_shorttitle = jobcard['clipinfo']['shorttitle']
+        clip_title = jobcard['clipinfo']['title']
+        clip_keywords = jobcard['clipinfo']['keywords']
+        clip_star_name = jobcard['clipinfo']['star']['name'] if "name" in jobcard['clipinfo']['star'] else ''          
+        clip_star2 = True if "star2" in jobcard['clipinfo'] else False
+        if clip_star2:
+            logger.info("Loading Star 2")
+            clip_star2_name = jobcard['clipinfo']['star2']['name'] if "name" in jobcard['clipinfo']['star2'] else ''
+        clip_supporting_name = jobcard['clipinfo']['supporting']['name'] if "name" in jobcard['clipinfo']['supporting'] else ''
         
-    except Exception as e: 
-        logger.error("Clip values are not properly set, please correct error " + str(e))
-        Error = True
+              
+        
+    except Exception as e:  
+        logger.warning("Not all clip variables set properly; exception " + str(e)) 
+        Error = True    
     
     #setup final destination in complex situations
     if not item_name == None and not item_dir == None:
@@ -134,49 +146,6 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
         logger.error("Codec values are not properly set, please correct error " + str(e))
         Error = True
     
-    #===========================================================================
-    # Get Thumbnail info (if requested)
-    #===========================================================================
-
-    if item_thumbnail:
-        try:
-            thumbnail_width = jobcard['thumbnails']['set_width'] if 'set_width' in jobcard['thumbnails'] else 96
-            thumbnail_height = jobcard['thumbnails']['set_height'] if 'set_height' in jobcard['thumbnails'] else 96
-            thumbnail_dir = jobcard['thumbnails']['dir']  if 'dir' in jobcard['thumbnails'] else "thumbs"
-            thumbnail_suffix = jobcard['thumbnails']['suffix']  if 'suffix' in jobcard['thumbnails'] else "_T"
-            thumbnail_ext = jobcard['thumbnails']['ext']  if 'ext' in jobcard['thumbnails'] else ".jpg"
-            thumbnail_size = str(thumbnail_width) + "x" + str(thumbnail_height)
-            thumbnail_destination = finaldestination + "/" + thumbnail_dir
-            
-        
-        except Exception as e: 
-            logger.error("Thumbnail values are not properly set, please correct error " + str(e))
-            Error = True    
-
-    #===========================================================================
-    # Get Watermark Info (If requested)
-    #===========================================================================
-
-    if item_watermark:
-        try:
-            watermark_dir = jobcard['watermark']['dir']  if 'dir' in jobcard['watermark'] else "watermark"
-            watermark_suffix = jobcard['watermark']['suffix']  if 'suffix' in jobcard['watermark'] else "_W"
-            watermark_ext = jobcard['watermark']['ext']  if 'ext' in jobcard['watermark'] else ".jpg"
-            watermark_template = jobcard['watermark']['template']  if 'template' in jobcard['watermark'] else ""
-            watermark_fontsize = jobcard['watermark']['fontsize']  if 'fontsize' in jobcard['watermark'] else 100
-            watermark_color = jobcard['watermark']['color']  if 'color' in jobcard['watermark'] else "purple"
-            watermark_videofontsize  = jobcard['watermark']['videofontsize']  if 'videofontsize' in jobcard['watermark'] else 30
-            watermark_font = config['watermark']['font']  if 'font' in config['watermark'] else ""
-            watermark_copysymbol = config['watermark']['copysymbol']  if 'copysymbol' in config['watermark'] else "(c)"
-            watermark_location = jobcard['watermark']['location']  if 'location' in jobcard['watermark'] else "southeast"
-            watermark_destination = finaldestination + "/" + watermark_dir
-        
-        except Exception as e: 
-            logger.error("Watermark values are not properly set, please correct error " + str(e))
-            Error = True    
-
-
-
  
     
     source_path = item_src.split("/")
@@ -202,17 +171,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     else:
         logger.debug("Directory will not be created")
         
-    if not os.path.isdir(watermark_destination) and not noexec and item_watermark:
-        logger.debug("Creating watermark directory destination " + str(watermark_destination))
-        os.makedirs(watermark_destination)
-    else:
-        logger.debug("watermark directory will not be created")
     
-    if not os.path.isdir(thumbnail_destination) and not noexec and item_thumbnail:
-        logger.debug("Creating thumbnail directory destination " + str(thumbnail_destination))
-        os.makedirs(thumbnail_destination)
-    else:
-        logger.debug("thumbnail directory will not be created")
+    
         
     
     logger.info("Module starting for action produce")
@@ -270,65 +230,24 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     # make thumbnails if needed
     #===========================================================================
+    pattern = "*" + item_suffix + "*"
 
     if item_thumbnail:
-
-        CMD_TEMPLATE = "$MOGRIFY -resize $SIZE -background white -gravity center -extent $SIZE -format jpg -quality 75 -path $THUMBDIR ${CAPTURE}/*${EXT}"            
-        CMD = Template(CMD_TEMPLATE).safe_substitute(MOGRIFY=MOGRIFY, SIZE=thumbnail_size, THUMBDIR=thumbnail_destination, CAPTURE=finaldestination, EXT=thumbnail_ext)
-        logger.debug("Thumbnail Command: " + CMD)
-        
-        command = {}
-        command_status = {}
-        command_name = 'thumbnail'
-    
-        # Run Command
-        
-        if noexec:
-            command[command_name] = subprocess.Popen("echo", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        else:
-            logger.warning("Running Command - " + str(command_name))  
-            command[command_name] = subprocess.Popen(CMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)       
-            logger.info( "COMMAND" + command_name + " for "+ item_src + " Started" )
+        Error = task.thumbnail(config,jobcard,finaldestination,pattern,noexec)
             
         
     
     #===========================================================================
     # create watermark images if needed
     #===========================================================================
-    
-    
-     
-    watermark_text = Template(watermark_template).safe_substitute(STAR=clip_star_name, COPYRIGHT=watermark_copysymbol.encode('utf-8'))
-    for markFile in os.listdir(finaldestination):
-        if os.path.isfile(str(finaldestination) + "/" + str(markFile)):
-            fileBase, fileExt = markFile.split('.')
-            CMD_TEMPLATE = "$CONVERT '${FINALDESTINATION}/${MARKFILE}'  -background none -font $FONT -fill $COLOR -gravity $LOCATION -pointsize $FONTSIZE -annotate 0 '$TEXT' -flatten '${WATERDESTINATION}/${ORIGFILE}${SUFFIX}${EXT}'" 
-            CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, MARKFILE=markFile, COLOR=watermark_color, FINALDESTINATION=finaldestination, FONT=watermark_font, LOCATION=watermark_location, FONTSIZE=watermark_fontsize, EXT=watermark_ext , SUFFIX=watermark_suffix, TEXT=watermark_text, ORIGFILE=fileBase, WATERDESTINATION=watermark_destination)
-            
-            if not noexec:
-                command[fileBase] = subprocess.Popen(CMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            
-            logger.info("Watermark Command " + str(CMD))
-       
+    watermark_data = {}
+    pattern = item_suffix
+    if item_watermark:
+        watermark_data['STAR'] = clip_star_name
+        watermark_data['STAR2'] = clip_star2_name if clip_star2 else ""    
+        watermark_data['SHORTTITLE'] = clip_shorttitle
         
-    #===========================================================================
-    # Verify all subprocesses have completed.
-    #===========================================================================
-    if not noexec:
-        # Check if Command executed
-        
-        for eachProcess in command:
-            logger.info("Check if " + str(eachProcess) + " Completed")
-            stdoutdata, stderrdata = command[eachProcess].communicate()
-            command_status[eachProcess] = command[eachProcess].returncode 
-            if command_status[eachProcess] == 0:
-                logger.info(str(eachProcess) + " Completed, returned Status: " + str(command_status[eachProcess]))
-                logger.debug(stdoutdata)
-            else:
-                logger.error(str(eachProcess) + "failed, with Status:"+ str(command_status[eachProcess]))
-                logger.error(stderrdata)
-                Error = True
-
+        task.watermark(config, jobcard, finaldestination, watermark_data, pattern, noexec)
     
     
         

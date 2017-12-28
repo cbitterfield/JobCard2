@@ -76,13 +76,16 @@ compliance_2257:
   module: noaction  
 
 scenethumb:
-  module: noaction  
+  module: image  
 
 videoinfo:
   module: noaction  
   
 promoimg:
-  module: noaction  
+  module: image
+
+photoset:
+  module: image  
  
 boxcover:
   font: /Library/Fonts/Skia.ttf

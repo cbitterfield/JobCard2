@@ -54,7 +54,7 @@ video.2:
           
 capture.1: 
      type: component
-     action: ignore
+     action: produce
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
      frame_every: 30
      thumbnail: true
@@ -86,7 +86,7 @@ boxcover:
 
 promoimg: 
      type: component
-     action: ignore
+     action: produce
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/Promos/GMCZ0022_Samples
      set_width: 3782
      set_height: 
@@ -98,18 +98,17 @@ promoimg:
 
 photoset.1: 
      type: component
-     action: ignore
-     src: C16F01-C16G00/C16G00_Finished_B70901-B70907/GMCZ/GMCZ0022_3872P_JPG/
+     action: produce
+     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/photoset1
      set_width: 3872
      set_height: 2592
      timed: true
-     dir: photoset
+     dir: photo
      suffix: _set
-     count: 36
      ext: .jpg
-     name: set1
-     thumbnail: true
-     watermark: true
+     name: GMCZ0022_IMAGES
+     thumbnail: false
+     watermark: false
  
 videoinfo:
      type: sub-component
@@ -138,7 +137,7 @@ watermark:
 
 scenethumb: 
      type: component
-     action: ignore
+     action: produce
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/scenethumb/GMCZ0022_DONNA_BELL__CHOKY_ICE_32.jpg
      set_width: 96
      set_height: 96

@@ -322,6 +322,7 @@ def copyconvert(source, destination, edgeid, ext, suffix, recursive, config, noe
     # Deal with Image, Video, PDF or other types
     #===========================================================================
     
+    counter = 0
     
     #===========================================================================
     # Dealing with files that ImageMagick can deal with.
@@ -331,17 +332,18 @@ def copyconvert(source, destination, edgeid, ext, suffix, recursive, config, noe
         logger.debug("image files")
         # Image files will convert to ext format. This includes PDFs
         for copyFile in FileList:
-    
+            counter = counter + 1
+            item_number = str("_%03d" % counter)
                 
             if copyFile.endswith(".jpg") or copyFile.endswith(".jpeg") or copyFile.endswith(".tiff") or copyFile.endswith(".tiff") or copyFile.endswith(".png") or copyFile.endswith(".gif") or copyFile.endswith(".pdf"):
                 baseName = os.path.basename(copyFile)
                 Name, extName = baseName.split(".")
                 # Check to see if destination file exsits.        
-                newName = str(edgeid) + str(suffix) + str(ext)
+                newName = str(edgeid) + str(item_number) + str(suffix) + str(ext)
                 proposeName = str(destination) +"/" + str(newName)
                     
                 if os.path.isfile(proposeName):            
-                    newName = str(edgeid) + str(suffix) + "[" + str(baseName) + "]" + str(ext) 
+                    newName = str(edgeid) + str(item_number) + str(suffix) + "[" + str(baseName) + "]" + str(ext) 
                     logger.warn("Destination File exists, new name " + newName)
                 else:
                     logger.info("New Name is " + str(newName))
@@ -372,11 +374,11 @@ def copyconvert(source, destination, edgeid, ext, suffix, recursive, config, noe
                 Name, extName = baseName.split(".")
                 origExt = "." + extName
                 # Check to see if destination file exsits.        
-                newName = str(edgeid) + str(suffix) + str(origExt)
+                newName = str(edgeid) + str(item_number) + str(suffix) + str(origExt)
                 proposeName = str(destination) +"/" + str(newName)
                 
                 if os.path.isfile(proposeName):            
-                    newName = str(edgeid) + str(suffix) + "[" + str(baseName) + "]" + str(origExt) 
+                    newName = str(edgeid) + str(item_number) + str(suffix) + "[" + str(baseName) + "]" + str(origExt) 
                     logger.warn("Destination File exists, new name " + newName)
                 else:
                     logger.info("New Name is " + str(newName))
@@ -412,3 +414,154 @@ def copyconvert(source, destination, edgeid, ext, suffix, recursive, config, noe
             
     
     return Error
+
+def thumbnail(config,jobcard,finaldestination,pattern, noexec):
+    #===========================================================================
+    # Programs needed
+    #===========================================================================
+    CONVERT=config['programs']['convert']
+    MOGRIFY=config['programs']['mogrify']
+    
+    #===========================================================================
+    # Get Thumbnail info (if requested)
+    #===========================================================================
+    Error = False
+    
+    try:
+        thumbnail_width = jobcard['thumbnails']['set_width'] if 'set_width' in jobcard['thumbnails'] else 96
+        thumbnail_height = jobcard['thumbnails']['set_height'] if 'set_height' in jobcard['thumbnails'] else 96
+        thumbnail_dir = jobcard['thumbnails']['dir']  if 'dir' in jobcard['thumbnails'] else "thumbs"
+        thumbnail_suffix = jobcard['thumbnails']['suffix']  if 'suffix' in jobcard['thumbnails'] else "_T"
+        thumbnail_ext = jobcard['thumbnails']['ext']  if 'ext' in jobcard['thumbnails'] else ".jpg"
+        thumbnail_size = str(thumbnail_width) + "x" + str(thumbnail_height)
+        thumbnail_destination = finaldestination + "/" + thumbnail_dir
+        
+    
+    except Exception as e: 
+        logger.error("Thumbnail values are not properly set, please correct error " + str(e))
+        Error = True    
+    
+    if not os.path.isdir(thumbnail_destination) and not noexec:
+        logger.debug("Creating thumbnail directory destination " + str(thumbnail_destination))
+        os.makedirs(thumbnail_destination)
+    else:
+        logger.debug("thumbnail directory will not be created")
+      
+
+    CMD_TEMPLATE = "$MOGRIFY -set filename:name %[base]  -write '${THUMBDIR}/%[filename:name]${THUMBSUFFIX}${EXT}' -background white -gravity center -extent $SIZE -resize $SIZE  ${FINALDESTINATION}/${PATTERN}"         
+    CMD = Template(CMD_TEMPLATE).safe_substitute(MOGRIFY=MOGRIFY, SIZE=thumbnail_size, THUMBDIR=thumbnail_destination, FINALDESTINATION=finaldestination, EXT=thumbnail_ext, THUMBSUFFIX=thumbnail_suffix,PATTERN=pattern)
+    logger.debug("Thumbnail Command: " + CMD)
+    
+    command = {}
+    command_status = {}
+    command_name = 'thumbnail'
+
+    # Run Command
+    
+    if noexec:
+        command[command_name] = subprocess.Popen("echo", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    else:
+        logger.debug("Running Command - " + str(command_name))  
+        command[command_name] = subprocess.Popen(CMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)  
+    #========================================================================
+    # Verify command ran properly
+    #========================================================================
+  
+        logger.info("Check if " + str(command_name) + " Completed")
+        stdoutdata, stderrdata = command[command_name].communicate()
+        command_status[command_name] = command[command_name].returncode 
+        if command_status[command_name] == 0:
+            logger.info(str(command_name) + " Completed, returned Status: " + str(command_status[command_name]))
+            logger.debug(stdoutdata)
+        else:
+            logger.error(str(command_name) + "failed, with Status:"+ str(command_status[command_name]))
+            logger.error(stderrdata)
+            Error = True
+        
+    return Error     
+        
+def watermark(config,jobcard,finaldestination,watermark_data,pattern, noexec):
+    #===========================================================================
+    # Programs needed
+    #===========================================================================
+    CONVERT=config['programs']['convert']
+    MOGRIFY=config['programs']['mogrify']
+    
+    #====================================================================
+    # Local Variables
+    #====================================================================
+    Error = False
+    command = {}
+    command_status = []
+    
+    #===========================================================================
+    # Get Watermark Info (If requested)
+    #===========================================================================
+
+
+    try:
+        watermark_dir = jobcard['watermark']['dir']  if 'dir' in jobcard['watermark'] else "watermark"
+        watermark_suffix = jobcard['watermark']['suffix']  if 'suffix' in jobcard['watermark'] else "_W"
+        watermark_ext = jobcard['watermark']['ext']  if 'ext' in jobcard['watermark'] else ".jpg"
+        watermark_template = jobcard['watermark']['template']  if 'template' in jobcard['watermark'] else ""
+        watermark_fontsize = jobcard['watermark']['fontsize']  if 'fontsize' in jobcard['watermark'] else 100
+        watermark_color = jobcard['watermark']['color']  if 'color' in jobcard['watermark'] else "purple"
+        watermark_videofontsize  = jobcard['watermark']['videofontsize']  if 'videofontsize' in jobcard['watermark'] else 30
+        watermark_font = config['watermark']['font']  if 'font' in config['watermark'] else ""
+        watermark_copysymbol = config['watermark']['copysymbol']  if 'copysymbol' in config['watermark'] else "(c)"
+        watermark_location = jobcard['watermark']['location']  if 'location' in jobcard['watermark'] else "southeast"
+        watermark_destination = finaldestination + "/" + watermark_dir
+    
+    except Exception as e: 
+        logger.error("Watermark values are not properly set, please correct error " + str(e))
+        Error = True   
+     
+    #===========================================================================
+    # Create Directory if needed
+    #===========================================================================
+    if not os.path.isdir(watermark_destination) and not noexec:
+        logger.debug("Creating watermark directory destination " + str(watermark_destination))
+        os.makedirs(watermark_destination)
+    else:
+        logger.debug("watermark directory will not be created")
+       
+    
+    #===========================================================================
+    # Watermark Files
+    #===========================================================================
+    watermark_text = Template(watermark_template).safe_substitute(STAR=watermark_data['STAR'], STAR2=watermark_data['STAR2'],SHORTTITLE=watermark_data['SHORTTITLE'], COPYRIGHT=watermark_copysymbol.encode('utf-8'))
+    logger.debug("Watermark [" + str(watermark_text) + "]")
+    logger.debug("Patter to match " + str(pattern))
+    for markFile in os.listdir(finaldestination):
+        if os.path.isfile(str(finaldestination) + "/" + str(markFile)):
+            if pattern in markFile:
+                fileBase, fileExt = markFile.split('.')
+                CMD_TEMPLATE = "$CONVERT '${FINALDESTINATION}/${MARKFILE}'  -background none -font $FONT -fill $COLOR -gravity $LOCATION -pointsize $FONTSIZE -annotate 0 '$TEXT' -flatten '${WATERDESTINATION}/${ORIGFILE}${SUFFIX}${EXT}'" 
+                CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, MARKFILE=markFile, COLOR=watermark_color, FINALDESTINATION=finaldestination, FONT=watermark_font, LOCATION=watermark_location, FONTSIZE=watermark_fontsize, EXT=watermark_ext , SUFFIX=watermark_suffix, TEXT=watermark_text, ORIGFILE=fileBase, WATERDESTINATION=watermark_destination)
+                
+                if not noexec:
+                    command[fileBase] = subprocess.Popen(CMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                
+                logger.info("Watermark Command " + str(CMD))
+            else:
+                logger.debug("Non pattern matched file: " + str(markFile))
+    #===========================================================================
+    # Check for completion of all watermarks
+    #===========================================================================
+    if not noexec:
+    # Check if Command executed
+    
+        for eachProcess in command:
+            logger.info("Check if " + str(eachProcess) + " Completed")
+            stdoutdata, stderrdata = command[eachProcess].communicate()
+            command_status[eachProcess] = command[eachProcess].returncode 
+            if command_status[eachProcess] == 0:
+                logger.info(str(eachProcess) + " Completed, returned Status: " + str(command_status[eachProcess]))
+                logger.debug(stdoutdata)
+            else:
+                logger.error(str(eachProcess) + "failed, with Status:"+ str(command_status[eachProcess]))
+                logger.error(stderrdata)
+                Error = True
+            
+            
+    return Error        
