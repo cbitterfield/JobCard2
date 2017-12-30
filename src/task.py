@@ -35,9 +35,8 @@ def videosize(source, config, noexec):
     duration = '00:00:00'
     bkps = 1500
 
-    FFMPEG=config['locations']['ffmpeg']
-    FFPROBE=config['locations']['ffprobe']
-    MD5=config['locations']['md5']
+    FFMPEG=config['programs']['ffmpeg']
+    FFPROBE=config['programs']['ffprobe']
     
     CMD_TEMPLATE = "$FFPROBE  -v error -of flat=s=_ -select_streams v:0 -show_entries stream=height,width,bit_rate,duration '$VIDEO'"
     CMD = Template(CMD_TEMPLATE).safe_substitute(FFPROBE=FFPROBE, VIDEO=source)
@@ -156,7 +155,9 @@ def test(test_text):
     
     return(test)   
 
-def md5(fname):
+def md5(fname, noexec):
+    if noexec:
+        return 'DUMMYHASHVALUE'
     import hashlib
     logger.info("Generating md5 for " + str(fname))
     hash_md5 = hashlib.md5()

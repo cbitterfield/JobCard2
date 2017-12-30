@@ -98,6 +98,7 @@ USAGE
  
         # Process arguments
         args = parser.parse_args()
+        noexec = args.noexec
 
 
     except KeyboardInterrupt:

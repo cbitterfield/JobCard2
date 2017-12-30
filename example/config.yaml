@@ -37,27 +37,33 @@ default:
 # Component Defaults
   
 video:
-  title_color: DarkMagenta
-  title_font_color: White
-  title_font_size: 48
-  title_x: 100
-  title_y: 100
-  title_suffix: _title
-  title_ext: .mp4
-  title_font: /Library/Fonts/Arial.ttf
+  # Suffix Settings
+  transcode_suffix: _transcode
+  assembly_suffix: _assembly
+  module: video
+  
+intro:
+  intro_color: DarkMagenta
+  intro_font_color: White
+  intro_font_size: 48
+  intro_title_font_size: 68
+  intro_short_font_size: 88
+  intro_x: 100
+  intro_y: 100
+  intro_suffix: _intro
+  intro_ext: .mp4
+  intro_font: /edge/JobCard2/font/Arial.ttf
   # Text Size Based on 1920x1080; automatically scaled
+
+compliance:
   compliance_license: Edge Interactive  
   compliance_template: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard/example/compliance_template.txt
   compliance_color: DarkMagenta
-  compliance_font: /Library/Fonts/Arial.ttf
+  compliance_font: /edge/JobCard2/font/Arial.ttf
   compliance_text_color: White
   compliance_text_size: 30
   compliance_suffix: _compliance
   compliance_ext: .mp4
-  # Suffix Settings
-  transcode_suffix: _transcode
-  assembly_suffix: _assembly
-  module: noaction
   
 capture:
   module: capture
