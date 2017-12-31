@@ -45,7 +45,7 @@ logger.info(jobcard)
 
 noexec = False
 
-logger.info("Testing a task")
+logger.info("Testing a task --")
 
 source = "/edge/EdgeSource01/C1E253-C1E258/C1E255_COMBAT_ZONE-682"
 destination = "/edge/Scratch/Test03"

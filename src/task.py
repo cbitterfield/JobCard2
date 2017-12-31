@@ -173,7 +173,8 @@ def makeList (jobcard,object_eval):
     myList = []
     for object in sorted(jobcard):
         object_type = jobcard[object]['type'] if "type" in jobcard[object] else None
-        if object_type == object_eval:
+        object_action = jobcard[object]['action'] if "action" in jobcard[object] else None
+        if object_type == object_eval and (object_action == 'produce' or object_action=='exists' or object_action=='ignore'):
             myList.append(object)
             
     return myList   
@@ -565,4 +566,7 @@ def watermark(config,jobcard,finaldestination,watermark_data,pattern, noexec):
                 Error = True
             
             
-    return Error        
+    return Error    
+
+def number_exists(string):    
+    return any(i.isdigit() for i in string)

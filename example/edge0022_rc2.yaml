@@ -146,7 +146,7 @@ scenethumb:
      suffix: _scene_T
      prefix: edge0022
      ext: .jpg
-     name: promo2   
+     name: GMCZ0022_IMAGES   
 
 text.description: 
      type: component
@@ -196,9 +196,10 @@ compliance_2257:
 
 clips4sale: 
      type: product
-     account: edge001
-     boxcover: False
-     promoimg: False 
+     action: produce
+     account: Edgeinter11
+     boxcover: True
+     promoimg: True 
      video.1: True
      name: clips4sale
      text.clips4sale: true
@@ -210,23 +211,26 @@ clips4sale:
 
 ebay: 
      type: product
-     photoset1: false
-     scenethumb: false
+     action: produce
+     photoset.1: true
+     scenethumb: true
      video.1: true
      capture.1: true
-     promoimg: false
-     boxcover: false
+     promoimg: true
+     boxcover: true
      text.description: true
      text.ebay: true
      name: ebay
      map_photoset: photos
      map_promoimg: promo
-     map_photoset1: photos/set1
-     map_capture: photos/capture
+     map_photoset.1: photos/set1
+     map_capture.1: photos/capture
      map_text.ebay: ./
+     
 
 dvd: 
      type: product
+     action: ignore
      photoset.1: true
      video.1: true
      capture: true
@@ -246,6 +250,7 @@ picticon:
 
 aebn: 
      type: product
+     action: ignore
      dir: aebn
      video.1: true
      boxcover: true
@@ -258,6 +263,7 @@ aebn:
 
 hotmovies: 
      type: product
+     action: ignore
      dir: hotmovies
      video.1: true
      boxcover: true
@@ -269,6 +275,7 @@ hotmovies:
 
 flickrocket: 
      type: product
+     action: ignore
      dir: flickrocket
      video.1: true
      boxcover: true
@@ -280,11 +287,10 @@ flickrocket:
 
 book: 
      type: product
+     action: ignore
      dir: book
      book: true
      pict1: true
      pict2: true
      description: true
 
-error:
-    test: problem

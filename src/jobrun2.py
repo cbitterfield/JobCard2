@@ -44,6 +44,7 @@ DEBUG = 0
 TESTRUN = 0
 PROFILE = 0
 DEST_VOL = "assembly"
+PRODUCT_VOL = "scratch"
 
 class CLIError(Exception):
     '''Generic exception to raise and log different fatal errors.'''
@@ -214,7 +215,22 @@ USAGE
     # Run Product Jobs
     if not args.noproduct:
         logger.info("Running product jobs")
-        
+        logger.debug(products)
+        for product in products:
+            logger.debug("Product Job for " + str(product))
+            try:
+                item_module = config[product]["module"] if "module" in config[product] else None
+            except Exception as e:  
+                item_module = 'noaction'  
+            logger.debug("Module for production is " + str(item_module))
+            myModule = importlib.import_module(item_module)
+            product_action = jobcard[product]['action'] if "action" in jobcard[product] else None
+            if product_action == 'produce':
+                myError = myModule.produce(DEST_VOL, PRODUCT_VOL,product, jobcard, config, volume, components, args.noexec)
+            elif product_action == 'exists':
+                myError = myModule.exists(DEST_VOL, PRODUCT_VOL,product, jobcard, config, volume, components, args.noexec)
+            else:
+                myError = myModule.ignore(DEST_VOL,PRODUCT_VOL,product, jobcard, config, volume, components, args.noexec)    
     
     
     

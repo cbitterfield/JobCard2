@@ -30,7 +30,7 @@ default:
   scratch: /edge/Scratch
   source: /edge/EdgeSource01
   deliveries: /edge/Delivery
-  templates: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard
+  templates: /edge/JobCard
   volume: ./example/volume.yaml
 
 
@@ -109,34 +109,34 @@ boxcover:
 #Product Defaults
  
 clips4sale:
-  ftpsite: 172.16.1.128
-  edge001: MyPassword
+  ftpsite: ftp.clips4sale.com
+  Edgeinter11: PornStars1
   edge002: AnotherPassword
   edge003: YetAnotherPassword
-  module: noaction
+  module: product
 
 flickrocket:  
   username: username
   password: password
-  module: noaction
+  module: product
   
 aebn:
-  module: noaction
+  module: product
   
 ebay:
-  module: noaction
+  module: product
 
 hotmovies:
-  module: noaction
+  module: product
 
 dvd:
-  module: noaction
+  module: product
   
 book:
-  module: noaction
+  module: product
   
 picticon:
-  module: noaction
+  module: product
     
 watermark:
   font: /Library/Fonts/Skia.ttf
