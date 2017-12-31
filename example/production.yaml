@@ -1,0 +1,146 @@
+programs:
+  convert: /usr/bin/convert
+  ffmpeg: /usr/local/bin/ffmpeg
+  identify: /usr/bin/identify
+  curl: /opt/local/bin/curl
+  flickrocket: /bin/echo
+  ffprobe: /usr/local/bin/ffprobe
+  mogrify: /usr/bin/mogrify
+  mkisofs: /usr/bin/mkisofs
+  dvdauthor: /usr/bin/bin/dvdauthor
+  atomicparsley: /usr/bin/AtomicParsley
+  
+  
+codec:
+  mp4_decode: h264_cuvid
+  mp4_encode: h264_nvenc
+  mp4_simple: mpeg4
+  mp4_jpeg: mjpeg
+  mp4_accel: '-hwaccel cuvid'
+  mp4_threads: '-threads 8'
+  mp4_scalefilter: scale_npp
+ 
+ 
+  
+
+default:
+  mount: /edge
+  assembly: /edge/Assembly
+  finish: /edge/Finished
+  scratch: /edge/Scratch
+  source: /edge/EdgeSource01
+  deliveries: /edge/Delivery
+  templates: /edge/JobCard2
+  volume: /edge/JobCard2/example/volume.yaml
+
+
+# Component Defaults
+  
+video:
+  # Suffix Settings
+  transcode_suffix: _transcode
+  assembly_suffix: _assembly
+  module: video
+  
+intro:
+  intro_color: DarkMagenta
+  intro_font_color: White
+  intro_font_size: 48
+  intro_title_font_size: 68
+  intro_short_font_size: 88
+  intro_x: 100
+  intro_y: 100
+  intro_suffix: _intro
+  intro_ext: .mp4
+  intro_font: /edge/JobCard2/font/Arial.ttf
+  # Text Size Based on 1920x1080; automatically scaled
+
+compliance:
+  compliance_license: Edge Interactive  
+  #compliance_template: /Users/colin/Documents/Appcelerator_Studio_Workspace/JobCard/example/compliance_template.txt
+  compliance_color: DarkMagenta
+  compliance_font: /edge/JobCard2/font/Arial.ttf
+  compliance_text_color: White
+  compliance_text_size: 30
+  compliance_suffix: _compliance
+  compliance_ext: .mp4
+  
+capture:
+  module: capture
+
+  
+text:
+  module: maketext
+  
+bookimg:
+  module: noaction
+  
+photoset:
+  module: noaction
+  
+compliance_2257:
+  module: noaction  
+
+scenethumb:
+  module: image  
+
+videoinfo:
+  module: noaction  
+  
+promoimg:
+  module: image
+
+photoset:
+  module: image  
+ 
+boxcover:
+  font: /Library/Fonts/Skia.ttf
+  star_size: 220
+  support_size: 160
+  shorttitle_size: 300
+  edgeid_size: 150
+  partno_size: 150
+  title_size: 200
+  title_location: right 
+  font_color: white
+  module: boxcover
+  back_suffix: _source
+
+#Product Defaults
+ 
+clips4sale:
+  ftpsite: ftp.clips4sale.com
+  Edgeinter11: PornStars1
+  edge002: AnotherPassword
+  edge003: YetAnotherPassword
+  module: product
+
+flickrocket:  
+  username: username
+  password: password
+  module: product
+  
+aebn:
+  module: product
+  
+ebay:
+  module: product
+
+hotmovies:
+  module: product
+
+dvd:
+  module: product
+  
+book:
+  module: product
+  
+picticon:
+  module: product
+    
+watermark:
+  font: /edge/JobCard2/font/Skia.ttf
+  copysymbol: '©'
+  
+
+    
