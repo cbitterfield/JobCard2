@@ -26,7 +26,7 @@ codec:
 default:
   mount: /edge
   assembly: /edge/Assembly
-  finish: /edge/Finished
+  finish: /edge/Finished/Finished
   scratch: /edge/Scratch
   source: /edge/EdgeSource01
   deliveries: /edge/Delivery
