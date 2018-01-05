@@ -92,6 +92,9 @@ promoimg:
 
 photoset:
   module: image  
+
+2257:
+  module: noaction
  
 boxcover:
   font: /Library/Fonts/Skia.ttf
