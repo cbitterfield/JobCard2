@@ -81,7 +81,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
         item_ext = jobcard[object]['ext'] if 'ext' in jobcard[object] else None
         item_width = jobcard[object]['set_width'] if 'set_width' in jobcard[object] else None
         item_height = jobcard[object]['set_height'] if 'set_height' in jobcard[object] else None
-        item_kbps = jobcard[object]['set_kbps'] if 'set_kbps' in jobcard[object] else None
+        item_kbps = jobcard[object]['set_kbps'] if 'set_kbps' in jobcard[object] else 1500
         boxcover_action = jobcard['boxcover']['action'] if "action" in jobcard['boxcover'] else None
         if boxcover_action == 'produce' or boxcover_action == 'exists':
                 try:
@@ -391,7 +391,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     
     CMD = FFMPEG + " -y -f lavfi -r 29.97 -i color=" + intro_color +":"+ str(item_width) + "x" + str(item_height) + " -f lavfi -i anullsrc -filter_complex  "
     # Make Title Line
-    CMD = CMD + "\"fade=t=in:st=00:d=0.5,fade=t=out:st=04:d=1,drawtext=enable='between(t,.5,04)':fontfile=" + intro_font_color + ":text=\'" + f_clip_title + " " + edgeid+  "\':x=(w-text_w)/2" + ":y=" + str(intro_y) +":fontcolor=" + intro_font_color  + ":fontsize=" + str(intro_title_font_size)
+    CMD = CMD + "\"fade=t=in:st=00:d=0.5,fade=t=out:st=04:d=1,drawtext=enable='between(t,.5,04)':fontfile=" + intro_font + ":text=\'" + f_clip_title + " " + edgeid+  "\':x=(w-text_w)/2" + ":y=" + str(intro_y) +":fontcolor=" + intro_font_color  + ":fontsize=" + str(intro_title_font_size)
     # Sub Title
     CMD = CMD +  ",drawtext=enable='between(t,.5,04)':fontfile=" + intro_font + ":text=\'Starring " + "\':x=(w-text_w)/2" +":y=" + str(intro_y+100) +":fontcolor=" + intro_font_color + ":fontsize=" + str(intro_fontsize)
     
