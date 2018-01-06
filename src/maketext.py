@@ -204,7 +204,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     template = open(item_source,"r")
     if not noexec:
-        puttext = open(finaldestination + "/" + edgeid + item_suffix + item_ext, "w")
+        puttext = open(str(finaldestination) + "/" + str(edgeid) + str(item_suffix) + str(item_ext), "w")
     
     for line in template:
         if clip_star2:      
