@@ -241,7 +241,10 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
                         task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
                     else:
                         logger.info("Transfer would occur if exec")
-        
+        else:
+            logger.error("Filetransfer failed")
+            logger.error("Password: " + str(product_password) + " Site: " + str(product_site))
+            Error = True
         
     if object == 'flickrocket':
         logger.info("Processing Flick Rocket")
