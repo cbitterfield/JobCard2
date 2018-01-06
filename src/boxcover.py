@@ -73,8 +73,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
         item_watermark = jobcard[object]['watermark'] if 'watermark' in jobcard[object] else False
         item_suffix = jobcard[object]['suffix'] + str(object_number) if 'suffix' in jobcard[object] else "_" + str(object_number)
         item_ext = jobcard[object]['ext'] if 'ext' in jobcard[object] else None
-        item_width = jobcard[object]['set_width'] if 'set_width' in jobcard[object] else None
-        item_height = jobcard[object]['set_height'] if 'set_height' in jobcard[object] else None
+        item_width = jobcard[object]['set_width'] if 'set_width' in jobcard[object] else 3724
+        item_height = jobcard[object]['set_height'] if 'set_height' in jobcard[object] else 5616
         item_kbps = jobcard[object]['set_kbps'] if 'set_kbps' in jobcard[object] else None
         
         
