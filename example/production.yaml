@@ -140,6 +140,9 @@ hotmovies:
 
 dvd:
   module: product
+
+iwantclips:
+  module: product
   
 book:
   module: product
