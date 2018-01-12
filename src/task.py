@@ -26,7 +26,7 @@ import datetime
 import logging
 import ftplib
 import smtplib
-from matplotlib.backends.qt4_editor.formlayout import ColorLayout
+
 
 logger = logging.getLogger(__name__)
 
