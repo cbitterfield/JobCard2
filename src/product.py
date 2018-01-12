@@ -211,7 +211,7 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
         logger.info("Doing the Ebay thing")
         logger.info("Creating DVD Image")
         logger.info("ISO Destination " + str(finaldestination))
-        CMD = MKISOFS + " -J -r -o " + destination + "/" + edgeid + "_ROM.iso -V " + edgeid + "_ROM -uid 500 -find " + finaldestination
+        CMD = MKISOFS + " -J -r -o " + destination + "/" + str(product_name) + "/" + edgeid + "_ROM.iso -V " + edgeid + "_ROM -uid 500 -find " + finaldestination
     
         logger.info("DVD Creation Command: " + CMD)
     
