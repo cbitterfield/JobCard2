@@ -138,6 +138,9 @@ dvd:
   
 book:
   module: product
+
+iwantclips:
+  module: product
   
 picticon:
   module: product
