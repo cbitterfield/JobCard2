@@ -1,4 +1,4 @@
-#!/opt/local/bin/python
+#!/usr/bin/python
 
 '''
 Created on Sep 30, 2017
@@ -47,13 +47,13 @@ noexec = False
 
 logger.info("Testing a task --")
 
-source = "/edge/EdgeSource01/C1E253-C1E258/C1E255_COMBAT_ZONE-682"
-destination = "/edge/Scratch/Test03"
-ext = ".mp4"
-recursive = False
-suffix = "_test"
-edgeid = "GMCZ0022"
+me = "colin@bitterfield.com"
+from = "colin@goedge.com
+subject = " Send Alerts from Python"
+message = "Automated Alert from Python Program"
 
-Error = task.copyconvert(source, destination, edgeid, ext, suffix, recursive, config, noexec)
+Error = task.sendMessage(me, you, subject, message)
+
+
 logger.info (Error)
 logger.info("End Testing a task")

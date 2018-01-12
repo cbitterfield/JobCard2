@@ -25,6 +25,9 @@ import subprocess
 import datetime
 import logging
 import ftplib
+import smtplib
+from matplotlib.backends.qt4_editor.formlayout import ColorLayout
+
 logger = logging.getLogger(__name__)
 
 def videosize(source, config, noexec):
@@ -570,3 +573,29 @@ def watermark(config,jobcard,finaldestination,watermark_data,pattern, noexec):
 
 def number_exists(string):    
     return any(i.isdigit() for i in string)
+
+def sendMessage(me,you,subject,message):
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    
+    logger.debug("Sending an email")
+    logger.debug("From: " + str(me))
+    logger.debug("To: " + str(you))
+    logger.debug("Subject: " + str(subject))
+    logger.debug("Message: " + str(message) )
+    
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = me
+    msg['To'] = you 
+    smtp_message = MIMEText(message, 'plain')
+    msg.attach(smtp_message)
+    
+    # Send the message
+    s = smtplib.SMTP('localhost')
+    s.sendmail(me, you, msg.as_string())
+    message_quit = s.quit()
+    logger.debug("Message Quit: " + str(message_quit))
+    return True
+    
