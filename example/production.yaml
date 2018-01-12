@@ -21,6 +21,10 @@ codec:
   mp4_scalefilter: scale_npp
  
  
+email_alerts:
+  from_email: green@godge.com
+  to_email: "colin@goedge.com, publisher@goedge.com"
+  
   
 
 default:

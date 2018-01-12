@@ -166,7 +166,13 @@ USAGE
         vol = open(volume_list, 'r')
         volume = yaml.load(vol)
     
+    # Load Email Alert Information
+    try:
+        from_email = config['email_alerts']['from_email'] if "from_email" in config['email_alerts'] else "green@goedge.com"
+        to_email = config['email_alerts']['to_email'] if "to_email" in config['email_alerts'] else "colin@goedge.com"
     
+    except:
+        logger.error("Problem getting email alert information")    
             
     
 
@@ -247,10 +253,14 @@ USAGE
     
     
     logger.info("Program run completed")
+    
+    
     if Error:
         logger.error("Program completed with errors")
+        Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed with errors")
     else:
         logger.info("Program completed without errors")
+        Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed without errors")
     return Error
     
     
