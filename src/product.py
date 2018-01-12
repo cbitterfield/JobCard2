@@ -62,6 +62,7 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
         product_action = jobcard[object]['action'] if "action" in jobcard[object] else None
         product_account = jobcard[object]['account'] if "account" in jobcard[object] else None
         product_name = jobcard[object]['name'] if "name" in jobcard[object] else None
+        product_dir = jobcard[object]['dir'] if "dir" in jobcard[object] else None
         
         
     except Exception as e: 
@@ -81,7 +82,16 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
     
     #setup final destination in complex situations
     
-    finaldestination = destination + "/" + str(product_name)
+    #finaldestination = destination + "/" + str(product_name)
+        #setup final destination in complex situations
+    if not product_name == None and not product_dir == None:
+        finaldestination = destination + "/" + str(product_name) + "/" + str(product_dir)
+    elif not product_name == None and product_dir == None:
+        finaldestination = destination + "/" + str(product_name)
+    elif product_name == None and not product_dir == None:
+        finaldestination = destination + "/" + str(product_dir)     
+    else:
+        finaldestination = destination
     
     
     #===========================================================================
@@ -259,18 +269,21 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
         for eachDir in os.listdir(finaldestination):
             if os.path.isdir(finaldestination + "/" + eachDir):
                 ftp_dir.append(eachDir)
+            if os.path.isfile(finaldestination + "/" + eachDir):
+                ftp_dir.append('.')
             
         if product_password and product_site:
             logger.info("Transfer of files starting")
             logger.debug("Directories to transfer " + str(ftp_dir))
             for transfer_dir in ftp_dir:
                 for transfer_file in os.listdir(finaldestination + "/" + transfer_dir):
-                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))
-                    if not noexec:
-                        logger.info("FTP TRANSFER")
-                        task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
-                    else:
-                        logger.info("Transfer would occur if exec")
+                    if os.path.isfile(finaldestination + "/" + transfer_dir + "/" + transfer_file):
+                        logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))
+                        if not noexec:
+                            logger.info("FTP TRANSFER")
+                            task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
+                        else:
+                            logger.info("Transfer would occur if exec")
         else:
             logger.error("Filetransfer failed")
             logger.error("Password: " + str(product_password) + " Site: " + str(product_site))
