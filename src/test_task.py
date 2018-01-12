@@ -48,7 +48,7 @@ noexec = False
 logger.info("Testing a task --")
 
 me = "colin@bitterfield.com"
-from = "colin@goedge.com
+you = "colin@goedge.com"
 subject = " Send Alerts from Python"
 message = "Automated Alert from Python Program"
 
