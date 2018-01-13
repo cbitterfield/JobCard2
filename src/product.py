@@ -234,28 +234,24 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
         logger.debug("Using password " + str(product_password))
         product_site = config[object]['ftpsite'] if 'ftpsite' in config[object] else False
         logger.info("Transfer host " + str(product_site))
-        # Make a list of directories
-        ftp_dir = []
-        for eachDir in os.listdir(finaldestination):
-            if os.path.isdir(finaldestination + "/" + eachDir):
-                ftp_dir.append(eachDir)
-            
-        if product_password and product_site:
-            logger.info("Transfer of files starting")
-            logger.debug("Directories to transfer " + str(ftp_dir))
-            for transfer_dir in ftp_dir:
-                for transfer_file in os.listdir(finaldestination + "/" + transfer_dir):
+        # Make a list of Files
+        for root, mydirs, files in os.walk(finaldestination):
+            for name in files:
+                ftp_filename = str(root) + "/" + str(name)
+                short_name = ftp_filename.replace(finaldestination,"")
+                transfer_dir = os.path.dirname(short_name)
+                transfer_file = os.path.basename(short_name)
+                if product_password and product_site and not noexec:
+                    logger.info("Transfer of files starting")
+                    logger.debug("Directories to transfer " + str(transfer_dir))
                     logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))
-                    if not noexec:
-                        logger.info("FTP TRANSFER")
-                        task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
-                    else:
-                        logger.info("Transfer would occur if exec")
-        else:
-            logger.error("Filetransfer failed")
-            logger.error("Password: " + str(product_password) + " Site: " + str(product_site))
-            Error = True
-     
+                    Error = task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
+                else:
+                    logger.warn("NOEXEC - Transfer of files starting")
+                    logger.debug("Directories to transfer " + str(transfer_dir))
+                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))  
+                    
+
      
     if object == 'iwantclips':
         logger.info("Processing iwantclips")
@@ -264,30 +260,23 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
         logger.debug("Using password " + str(product_password))
         product_site = config[object]['ftpsite'] if 'ftpsite' in config[object] else False
         logger.info("Transfer host " + str(product_site))
-        # Make a list of directories
-        ftp_dir = []
-        for eachDir in os.listdir(finaldestination):
-            if os.path.isdir(finaldestination + "/" + eachDir):
-                ftp_dir.append(eachDir)
-            if os.path.isfile(finaldestination + "/" + eachDir):
-                ftp_dir.append('.')
-            
-        if product_password and product_site:
-            logger.info("Transfer of files starting")
-            logger.debug("Directories to transfer " + str(ftp_dir))
-            for transfer_dir in ftp_dir:
-                for transfer_file in os.listdir(finaldestination + "/" + transfer_dir):
-                    if os.path.isfile(finaldestination + "/" + transfer_dir + "/" + transfer_file):
-                        logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))
-                        if not noexec:
-                            logger.info("FTP TRANSFER")
-                            task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
-                        else:
-                            logger.info("Transfer would occur if exec")
-        else:
-            logger.error("Filetransfer failed")
-            logger.error("Password: " + str(product_password) + " Site: " + str(product_site))
-            Error = True 
+           # Make a list of Files
+        for root, mydirs, files in os.walk(finaldestination):
+            for name in files:
+                ftp_filename = str(root) + "/" + str(name)
+                short_name = ftp_filename.replace(finaldestination,"")
+                transfer_dir = os.path.dirname(short_name)
+                transfer_file = os.path.basename(short_name)
+                if product_password and product_site and not noexec:
+                    logger.info("Transfer of files starting")
+                    logger.debug("Directories to transfer " + str(transfer_dir))
+                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))
+                    Error = task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
+                else:
+                    logger.warn("NOEXEC - Transfer of files starting")
+                    logger.debug("Directories to transfer " + str(transfer_dir))
+                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))  
+ 
         
     if object == 'flickrocket':
         logger.info("Processing Flick Rocket")
