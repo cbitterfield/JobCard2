@@ -270,7 +270,7 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
                 if product_password and product_site and not noexec:
                     logger.info("Transfer of files starting")
                     logger.debug("Directories to transfer " + str(transfer_dir))
-                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))
+                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir + "/" + str(transfer_file)) + "=> " + str(transfer_dir) + " <= " + str(transfer_file))
                     Error = task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
                 else:
                     logger.warn("NOEXEC - Transfer of files starting")
