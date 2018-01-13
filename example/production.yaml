@@ -101,7 +101,7 @@ photoset:
   module: noaction
  
 boxcover:
-  font: /Library/Fonts/Skia.ttf
+  font: /edge/JobCard2/font/Arial.ttf
   star_size: 220
   support_size: 160
   shorttitle_size: 300
