@@ -227,8 +227,8 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
         else:
             logger.info("Make ISO CMD: " + str(CMD))
         
-    if object == 'clips4sale':
-        logger.info("Processing Clips4Sale")
+    if object == 'clips4sale' or object == 'iwantclips':
+        logger.info("Processing " + str(object))
         logger.info("Using account " + str(product_account))
         product_password = config[object][product_account] if product_account in config[object] else False
         logger.debug("Using password " + str(product_password))
@@ -244,7 +244,7 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
                 if product_password and product_site and not noexec:
                     logger.info("Transfer of files starting")
                     logger.debug("Directories to transfer " + str(transfer_dir))
-                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))
+                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir + "/" + str(transfer_file)) + "=> " + str(transfer_dir) + " <= " + str(transfer_file))
                     Error = task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
                 else:
                     logger.warn("NOEXEC - Transfer of files starting")
@@ -253,30 +253,7 @@ def produce(source_vol, dest_vol, object, jobcard, config, volume, components, n
                     
 
      
-    if object == 'iwantclips':
-        logger.info("Processing iwantclips")
-        logger.info("Using account " + str(product_account))
-        product_password = config[object][product_account] if product_account in config[object] else False
-        logger.debug("Using password " + str(product_password))
-        product_site = config[object]['ftpsite'] if 'ftpsite' in config[object] else False
-        logger.info("Transfer host " + str(product_site))
-           # Make a list of Files
-        for root, mydirs, files in os.walk(finaldestination):
-            for name in files:
-                ftp_filename = str(root) + "/" + str(name)
-                short_name = ftp_filename.replace(finaldestination,"")
-                transfer_dir = os.path.dirname(short_name)
-                transfer_file = os.path.basename(short_name)
-                if product_password and product_site and not noexec:
-                    logger.info("Transfer of files starting")
-                    logger.debug("Directories to transfer " + str(transfer_dir))
-                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir + "/" + str(transfer_file)) + "=> " + str(transfer_dir) + " <= " + str(transfer_file))
-                    Error = task.filetransfer(product_account, product_password, product_site, finaldestination + "/" + transfer_dir + "/" + transfer_file, transfer_dir)
-                else:
-                    logger.warn("NOEXEC - Transfer of files starting")
-                    logger.debug("Directories to transfer " + str(transfer_dir))
-                    logger.debug("FTP => " + str(finaldestination + "/" + transfer_dir) + " <= " + str(transfer_file))  
- 
+
         
     if object == 'flickrocket':
         logger.info("Processing Flick Rocket")
