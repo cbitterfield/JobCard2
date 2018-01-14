@@ -1,0 +1,113 @@
+# JOB CARD
+clipinfo: 
+     projectno: Test01
+     prime_dubya: GMCZ_Scenes
+     edgeid: GMCZ0022
+     shorttitle: Suck Fuck Anal A2M Facial
+     title: Edge Interactive Collector Scene
+     description: Romanian Donna Bell started out shooting masturbation, toy and lesbo work but quickly graduated to sucking and fucking cocks. Here she is breaking through into in anal, A2M, and eventually DP roles. Today she runs with Choky Ice as the Spanish Maid with white hose and heels.
+     keywords: Porn Stars, Hetrosexual, Blowjobs, Finger Fucking, Vaginal Sex, Anal, A2M, Facials, Hose, Uniforms
+     productiondate: June 1, 2010
+     releasedate: October 6, 2017
+     licensor: Global Media International. 
+     star: 
+        name: Donna Bell
+        birthdate: August 11, 1988
+        age: 21
+        height: '5'' 7"'
+        weight: 105
+        measurements: 36C-27-37
+        hair: Blonde`
+        eyes: Blue
+        skin: Caucasian
+        birthplace: Constanta, Romania
+     supporting:
+        name: Choky Ice   
+     comment: Combat Zone, acquired 2015 GMI License. Stats trimmed from Iafd 38D-27-38 to 36C-27-37
+
+# Components are processed in alphabetical order
+# Components that might need to be multiples are seperated by {dot} {number}
+
+video.1:
+     type: component
+     action: ignore
+     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
+     watermark: true 
+     set_width: 1920
+     set_height: 1080
+     set_kbps: 6000
+     name: GMCZ0022_VID
+     suffix: _final
+     ext: .mp4
+     
+video.2:
+     type: component
+     action: ignore
+     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
+     watermark: false 
+     set_width: 1280
+     set_height: 720
+     set_kbps: 1500
+     suffix: _final
+     name: GMCZ0022_VID
+     ext: .mp4
+          
+capture.1: 
+     type: component
+     action: ignore
+     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/HDVC022.mp4
+     frame_every: 30
+     thumbnail: true
+     watermark: true
+     dir: images
+     suffix: _capture
+     name: GMCZ0022_VID
+     ext: .jpg
+
+     
+boxcover: 
+     type: component
+     action: produce
+     src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_DONNA_BELL__CHOKY_ICE_22.jpg
+     alignment: right
+     name: GMCZ0022_IMAGES
+     dir: boxcover
+     suffix: _boxcover
+     ext: .jpg
+     set_width: 3724
+     set_height: 5616
+     
+
+ 
+videoinfo:
+     type: sub-component
+     action: ignore
+     name: info 
+     dir: video
+
+thumbnails: 
+     type: sub-component
+     set_width: 96
+     set_height: 96
+     dir: thumbs
+     suffix: _T
+     ext: .jpg
+     
+watermark:
+     type: sub-component
+     fontsize: 100
+     videofontsize: 30
+     template: '$STAR $COPYRIGHT EDGE'
+     location: SouthEast
+     dir: watermark
+     color: purple
+     suffix: _W  
+     ext: .jpg   
+
+opencart:
+     type: product
+     action: produce
+     boxcover: true
+     name: opencart
+
+

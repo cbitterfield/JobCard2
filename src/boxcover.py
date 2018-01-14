@@ -134,6 +134,11 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     if clip_star2:
         logger.debug("Star2 Name: " + str(clip_star2_name))
     logger.debug("Supporting: " + str(clip_supporting_name))
+    logger.debug("Title Size " + str(boxcover_title_size))
+    logger.debug("Short Title Size " + str(boxcover_shortitle_size))
+    logger.debug("Star Size " + str(boxcover_star_size))
+    logger.debug("Support Star Size " + str(boxcover_support_size))
+    logger.debug("Font " + str(boxcover_font))
     
     #===========================================================================
     # Setup Module Destination Locations

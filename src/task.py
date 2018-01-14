@@ -598,4 +598,50 @@ def sendMessage(me,you,subject,message):
     message_quit = s.quit()
     logger.debug("Message Quit: " + str(message_quit))
     return True
+
+def sendeMail(config,subject,message):
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    
+    # get email parameters from config file
+    try:
+        from_email = config['email_alerts']['from_email'] if "from_email" in config['email_alerts'] else "green@goedge.com"
+        to_email = config['email_alerts']['to_email'] if "to_email" in config['email_alerts'] else "colin@goedge.com"
+        mail_user =  config['email_alerts']['mail_user'] if "mail_user" in config['email_alerts'] else "green@goedge.com"
+        mail_pw =  config['email_alerts']['mail_pw'] if "mail_pw" in config['email_alerts'] else ""
+        mail_host =  config['email_alerts']['mail_host'] if "mail_host" in config['email_alerts'] else "localhost"
+
+    except:
+        logger.error("Problem getting email alert information")    
+
+    
+    logger.debug("Mail Host: " + str(mail_host) )
+    logger.debug("Mail User: " + str(mail_user) )
+    logger.debug("Mail PW: " + str(mail_pw) ) 
+    logger.debug("Sending an email")
+    logger.debug("From: " + str(from_email))
+    logger.debug("To: " + str(to_email))
+    logger.debug("Subject: " + str(subject))
+    logger.debug("Message: " + str(message) )
+
+    
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = from_email
+    msg['To'] = to_email 
+    smtp_message = MIMEText(message, 'plain')
+    msg.attach(smtp_message)
+    
+    # Sendmail setup
+    smtpserver = smtplib.SMTP_SSL(mail_host,465)
+    smtpserver.ehlo
+    login_message = smtpserver.login(mail_user, mail_pw)
+    logger.debug("Login: " + str(login_message))
+    
+    # Send the message
+    smtpserver.sendmail(mail_user, to_email, msg.as_string())
+    message_close = smtpserver.quit()
+    logger.debug("Message Quit: " + str(message_close))
+    return True
     

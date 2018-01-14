@@ -20,7 +20,12 @@ codec:
   mp4_threads: '-threads 8'
   mp4_scalefilter: scale
  
- 
+email_alerts:
+  from_email: green@godge.com
+  to_email: "colin@goedge.com" 
+  mail_user: green@goedge.com
+  mail_pw: EkzXZhyU=HDWr9Xw
+  mail_host: smtpout.secureserver.net
   
 
 default:
@@ -97,7 +102,7 @@ photoset:
   module: noaction
  
 boxcover:
-  font: /Library/Fonts/Skia.ttf
+  font: /Library/Fonts/ArialBold.ttf
   star_size: 220
   support_size: 160
   shorttitle_size: 300
@@ -149,5 +154,6 @@ watermark:
   font: /Library/Fonts/Skia.ttf
   copysymbol: '©'
   
-
+opencart:
+  module: product
     

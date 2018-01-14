@@ -129,7 +129,7 @@ USAGE
     else:
         logging.basicConfig(disable_existing_loggers=False,format='%(asctime)s %(name)s:%(levelname)s:%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=args.debug)
     
-    logger.info("ARGS:" + str(args))
+    logger.debug("ARGS:" + str(args))
         
     # Check for minimum requirements
     if args.jobcard == None:
@@ -158,22 +158,14 @@ USAGE
     volume_list = config['default']['volume'] if 'volume' in config['default'] else None
     if volume_list == None:
         logger.error("Missing Volume List")
-        logger.info("Check config file for proper configuration")
+        logger.error("Check config file for proper configuration")
     elif not os.path.isfile(volume_list):
         logger.error("Bad or malformed Volume List")
-        logger.info("Check config file for proper configuration")
+        logger.error("Check config file for proper configuration")
     else:
         vol = open(volume_list, 'r')
         volume = yaml.load(vol)
-    
-    # Load Email Alert Information
-    try:
-        from_email = config['email_alerts']['from_email'] if "from_email" in config['email_alerts'] else "green@goedge.com"
-        to_email = config['email_alerts']['to_email'] if "to_email" in config['email_alerts'] else "colin@goedge.com"
-    
-    except:
-        logger.error("Problem getting email alert information")    
-            
+          
     
 
     products = task.makeList(jobcard, 'product')
@@ -257,10 +249,12 @@ USAGE
     
     if Error:
         logger.error("Program completed with errors")
-        Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed with errors")
+        Error = task.sendeMail(config,"Jobcard Completion " + str(args.jobcard) , "Program completed with errors")
+        #Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed with errors")
     else:
         logger.info("Program completed without errors")
-        Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed without errors")
+        Error = task.sendeMail(config,"Jobcard Completion " + str(args.jobcard) , "Program completed without errors")
+        #Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed without errors")
     return Error
     
     

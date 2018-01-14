@@ -157,5 +157,6 @@ watermark:
   font: /edge/JobCard2/font/Skia.ttf
   copysymbol: '©'
   
-
+opencart:
+  module: product
     

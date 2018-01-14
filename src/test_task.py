@@ -47,12 +47,11 @@ noexec = False
 
 logger.info("Testing a task --")
 
-me = "colin@bitterfield.com"
-you = "colin@goedge.com"
+
 subject = " Send Alerts from Python"
 message = "Automated Alert from Python Program"
 
-Error = task.sendMessage(me, you, subject, message)
+Error = task.sendeMail(config,"Jobcard Completion " , "Program completed with errors")
 
 
 logger.info (Error)
