@@ -74,8 +74,8 @@ boxcover:
      dir: boxcover
      suffix: _boxcover
      ext: .jpg
-     set_width: 3724
-     set_height: 5616
+     set_width: 1024
+     set_height: 2048
      
 
  

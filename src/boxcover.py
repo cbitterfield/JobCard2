@@ -96,6 +96,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
         boxcover_title_location = config[object]['title_location'] if "title_location" in config[object] else "right"
         boxcover_font_color = config[object]['font_color'] if "font_color" in config[object] else "White"
         boxcover_back_suffix = config[object]['back_suffix'] if "back_suffix" in config[object] else "_back"
+        boxcover_density = config[object]['density'] if "density" in config[object] else 72
   
     except Exception as e: 
         logger.error("Boxcover values are not properly set, please correct error " + str(e))
@@ -139,6 +140,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     logger.debug("Star Size " + str(boxcover_star_size))
     logger.debug("Support Star Size " + str(boxcover_support_size))
     logger.debug("Font " + str(boxcover_font))
+    logger.debug("Density " + str(boxcover_density))
     
     #===========================================================================
     # Setup Module Destination Locations
@@ -243,8 +245,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
         resizeto = "x" + str(item_height)   
     
     # Make image the correct size or add black background if needed. 
-    CMD_TEMPLATE = "$CONVERT -size ${WIDTH}x${HEIGHT} canvas:black '${ITEM_SOURCE}' -gravity ${GRAVITY} -resize $RESIZETO  -crop ${WIDTH}x${HEIGHT} -flatten '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}'"
-    CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext)
+    CMD_TEMPLATE = "$CONVERT -size ${WIDTH}x${HEIGHT} canvas:black '${ITEM_SOURCE}' -gravity ${GRAVITY} -resize $RESIZETO -density ${DENSITY} -crop ${WIDTH}x${HEIGHT} -flatten '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}'"
+    CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext, DENSITY=boxcover_density)
     logger.debug("Resize Command: " + str(CMD))
     
     command = {}
@@ -289,7 +291,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     
     
     
-    CMD = CONVERT + " -verbose -size " + str(item_width) + "x" + str(item_height) + " -font " + str(boxcover_font) + " -pointsize " + str(boxcover_title_size)
+    CMD = CONVERT + " -verbose -size " + str(item_width) + "x" + str(item_height) + " -font " + str(boxcover_font) + " -density " + str(boxcover_density) +" -pointsize " + str(boxcover_title_size)
     CMD = CMD + " -fill " + str(boxcover_font_color) + " \( \( -gravity " + gravity + " -background transparent -pointsize  " + str(boxcover_title_size) + "  label:\"" + boxcover_title +"\"" + " -pointsize " + str(boxcover_star_size)
     CMD = CMD + " -annotate +0+250 '" + str(all_star) + "'" + " -pointsize " + str(boxcover_support_size) + " -annotate +0+450 '" +  str(clip_supporting_name) + "' -splice 0x16 \)"
     CMD = CMD + " \( +clone -background black -shadow 20x-9+0+0 \) -background transparent +swap -layers merge +repage \)  \( \( -gravity West -background transparent -pointsize " 
