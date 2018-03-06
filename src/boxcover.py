@@ -293,8 +293,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     # Create Box Cover Command Template
     CMD_TEMPLATE = "$CONVERT -size ${WIDTH}x${HEIGHT} -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off"
     CMD_TEMPLATE = CMD_TEMPLATE + "\( -label 'image' $IMAGENAME \) "
-    CMD_TEMPLATE = CMD_TEMPLATE + 
-    
+    CMD_TEMPLATE = CMD_TEMPLATE + ""
+    # Fix this soon
     
     
     
