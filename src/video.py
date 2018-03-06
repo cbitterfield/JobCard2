@@ -526,7 +526,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     composer = quote + clip_licensor + quote
     copyright_text = quote + "This Product copyright 2017 Edge Interactive Publishing, New York. You are granted the right to view and store this Product for your personal use only. It is violation of copyright law to duplicate in whole or in part this Product for other than your own personal use and storage. No right is granted for reproduction of these images for gifting, licensing, or resale. This Product is not available for sale in any store. Because of the sexual nature of this Product it is also a violation of Federal Criminal Code to distribute this Product unless you hold the appropriate proofs of identity and age of the performers at the time of this shoot. " + quote
     grouping = quote + clip_prime_dubya + quote
-    artwork = quote + boxcoverdestination + "/" + boxcoverename + quote
+    if not boxcover_name == None:
+        artwork = quote + boxcoverdestination + "/" + boxcoverename + quote
     albumArtist = quote + all_star + quote 
     advisory = quote + "explict" + quote
     stik = quote + "Movie" + quote
