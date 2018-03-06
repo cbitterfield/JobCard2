@@ -23,3 +23,14 @@ C1E259-C1E260: EdgeSource01
 template: JobCard2
 scratch: Scratch
 assembly: Assembly
+C11000-C11999: EdgeSource01
+C12000-C12999: EdgeSource01
+C13000-C13999: EdgeSource01
+C16000-C16999: EdgeSource01
+C17000-C17999: EdgeSource01
+C18000-C18999: EdgeSource01
+C19000-C19999: EdgeSource01
+C1D767-C1D784: EdgeSource01
+C1E201-C1E260: EdgeSource01
+C1E000-C1E414: EdgeSource02
+C1E491-C1E520: EdgeSource03

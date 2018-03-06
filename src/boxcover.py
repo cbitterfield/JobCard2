@@ -290,15 +290,17 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     BOX_IMG = "'" + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + item_ext +"'"
     
     
+    # Create Box Cover Command Template
+    CMD_TEMPLATE = "$CONVERT -size ${WIDTH}x${HEIGHT} -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off"
+    CMD_TEMPLATE = CMD_TEMPLATE + "\( -label 'image' $IMAGENAME \) "
+    CMD_TEMPLATE = CMD_TEMPLATE + 
     
-    CMD = CONVERT + " -verbose -size " + str(item_width) + "x" + str(item_height) + " -font " + str(boxcover_font) + " -density " + str(boxcover_density) +" -pointsize " + str(boxcover_title_size)
-    CMD = CMD + " -fill " + str(boxcover_font_color) + " \( \( -gravity " + gravity + " -background transparent -pointsize  " + str(boxcover_title_size) + "  label:\"" + boxcover_title +"\"" + " -pointsize " + str(boxcover_star_size)
-    CMD = CMD + " -annotate +0+250 '" + str(all_star) + "'" + " -pointsize " + str(boxcover_support_size) + " -annotate +0+450 '" +  str(clip_supporting_name) + "' -splice 0x16 \)"
-    CMD = CMD + " \( +clone -background black -shadow 20x-9+0+0 \) -background transparent +swap -layers merge +repage \)  \( \( -gravity West -background transparent -pointsize " 
-    CMD = CMD + str(boxcover_shortitle_size) + " label:'" + str(boxcover_shorttitle) + "'  -splice 50x0 \)  \( +clone -background black -shadow 20x-9+0+0 \) -background transparent +swap -layers merge +repage \) \( -gravity SouthWest "+ " -pointsize " +str(boxcover_edgeid_size) + " -background transparent label:"
-    CMD = CMD + str(edgeid) +" -splice 100x0 \) " + "  \( \( -gravity SouthEast -background transparent label:'EDGE   \n' -splice 0x18  -pointsize 50  -annotate +50+192 '  _____________________   ' -splice 0x18 -pointsize 100 -annotate +50+120 'interactive  '   \) "
-    CMD = CMD + " \( +clone -background black -shadow 60x18+0+0 \) -background transparent +swap -layers merge +repage \) \(  -label 'image' -background transparent -mosaic label:blank "
-    CMD = CMD + "'" + str(RESIZE_IMG) + "' \) \(  -clone 0--1 -mosaic  \) -trim -reverse " + BOX_PSD + "; " + CONVERT + " " + BOX_PSD + " -flatten " + str(BOX_IMG)
+    
+    
+    
+    
+    CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext, DENSITY=boxcover_density)                                             
+    
     
     logger.debug("Box create command: " + str(CMD))
 
@@ -499,5 +501,5 @@ def exists(dest_vol, object, jobcard, config, volume, noexec):
 
 def ignore(dest_vol, object, jobcard, config, volume, noexec):
     Error = False
-    logger.warn("Ignoring action " + str(component))
+    logger.warn("Ignoring action " + str(object))
     return(Error)

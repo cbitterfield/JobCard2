@@ -102,14 +102,14 @@ photoset:
   module: noaction
  
 boxcover:
-  font: /edge/JobCard2/font/ArialBold.ttf
-  density: 185
-  star_size: 220
-  support_size: 160
-  shorttitle_size: 300
-  edgeid_size: 150
-  partno_size: 150
-  title_size: 200
+  font: /edge/JobCard2/font/ArialBlack.ttf
+  density: 72
+  star_size: 120
+  support_size: 110
+  shorttitle_size: 140
+  edgeid_size: 30
+  partno_size: 30
+  title_size: 50
   title_location: right 
   font_color: white
   module: boxcover
