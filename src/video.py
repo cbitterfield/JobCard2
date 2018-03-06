@@ -95,7 +95,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
                 except Exception as e: 
                     logger.error("Boxcover values are not properly set, please correct error " + str(e))
                     Error = True
-                
+        else:
+            boxcover_name = None        
         
         
     except Exception as e: 
