@@ -268,7 +268,8 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     else:
         boxcoverdestination = destination
     
-    boxcoverename = edgeid + boxcover_suffix + boxcover_ext
+    if not boxcover_name == None:
+        boxcoverename = edgeid + boxcover_suffix + boxcover_ext
     
     
     
