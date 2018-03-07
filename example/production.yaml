@@ -23,8 +23,10 @@ codec:
  
 email_alerts:
   from_email: green@godge.com
-  to_email: "colin@goedge.com, publisher@goedge.com"
-  
+  to_email: "colin@goedge.com" 
+  mail_user: green@goedge.com
+  mail_pw: EkzXZhyU=HDWr9Xw
+  mail_host: smtpout.secureserver.net 
   
 
 default:
