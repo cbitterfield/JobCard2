@@ -291,7 +291,7 @@ USAGE
             item_height_delta = item_height - 100
 
             CMD_TEMPLATE =  """
-            $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \)  \\
+            $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 24 -set colorspace:auto-grayscale off  \)  \\
             \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \)  \\
             -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${TITLE_GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"${TITLE}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
             -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x250 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
@@ -305,7 +305,7 @@ USAGE
 
             if nosupport:
                 CMD_TEMPLATE =  """
-                $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \)  \\
+                $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 24 -set colorspace:auto-grayscale off  \)  \\
                 \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \)  \\
                 -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${TITLE_GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"${TITLE}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
                 -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x250 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
