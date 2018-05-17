@@ -290,10 +290,8 @@ USAGE
             item_width_delta = item_width - 64
             item_height_delta = item_height - 100
 
-#-depth 24
-
             CMD_TEMPLATE =  """
-            $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none  -set colorspace:auto-grayscale off  \)  \\
+            $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \)  \\
             \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \)  \\
             -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${TITLE_GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"${TITLE}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
             -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x250 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
@@ -304,10 +302,10 @@ USAGE
             -label 'blank' \(  -size ${WIDTH}x${HEIGHT} -background transparent  -gravity SouthEast -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'' \)  \\
             -gravity center -extent ${WIDTH}x${HEIGHT}  ${BOXPSD};  $CONVERT $BOXPSD  -flatten $BOXIMG
             """
-#-depth 24 
+
             if nosupport:
                 CMD_TEMPLATE =  """
-                $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -set colorspace:auto-grayscale off  \)  \\
+                $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \)  \\
                 \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \)  \\
                 -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${TITLE_GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"${TITLE}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
                 -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x250 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
