@@ -109,8 +109,8 @@ boxcover:
   shorttitle_size: 140
   edgeid_size: 30
   partno_size: 30
-  title_size: 50
-  title_location: right 
+  title_size: 35
+  title_location: North 
   font_color: white
   module: boxcover
   back_suffix: _source

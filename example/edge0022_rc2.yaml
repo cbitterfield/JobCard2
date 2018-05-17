@@ -76,13 +76,13 @@ boxcover:
      action: produce
      src: C1E253-C1E258/C1E255_COMBAT_ZONE-682/BoxCovers/GMCZ0022_DONNA_BELL__CHOKY_ICE_22.jpg
      Ysrc: C16F01-C16G00/C16G00_Finished_B70901-B70907/BoxCovers/GMCZ0022_cover_3724x5296.jpg
-     alignment: right
+     alignment: center
      name: GMCZ0022_IMAGES
      dir: boxcover
      suffix: _boxcover
      ext: .jpg
-     set_width: 3724
-     set_height: 5616
+     set_width: 1024
+     set_height: 2048
      
 
 promoimg: 

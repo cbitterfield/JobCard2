@@ -249,11 +249,11 @@ USAGE
     
     if Error:
         logger.error("Program completed with errors")
-        Error = task.sendeMail(config,"Jobcard Completion " + str(args.jobcard) , "Program completed with errors")
+        ##Error = task.sendeMail(config,"Jobcard Completion " + str(args.jobcard) , "Program completed with errors")
         #Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed with errors")
     else:
         logger.info("Program completed without errors")
-        Error = task.sendeMail(config,"Jobcard Completion " + str(args.jobcard) , "Program completed without errors")
+        ##Error = task.sendeMail(config,"Jobcard Completion " + str(args.jobcard) , "Program completed without errors")
         #Error = task.sendMessage(from_email, to_email, "Jobcard Completion " + str(args.jobcard) , "Program completed without errors")
     return Error
     

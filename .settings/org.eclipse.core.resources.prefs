@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/boxcover.py=utf-8
 encoding//src/capture.py=utf-8
+encoding//src/generic_boxcover.py=utf-8
 encoding//src/jobrun2.py=utf-8
 encoding//src/maketext.py=utf-8
 encoding//src/task.py=utf-8

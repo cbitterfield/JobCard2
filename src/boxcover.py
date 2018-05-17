@@ -280,6 +280,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     logger.debug("Short Title " + str(boxcover_shorttitle) + " Size " + str(boxcover_shortitle_size))
     logger.debug("Star " + str(all_star) + " Size " + str(boxcover_star_size))
     logger.debug("Supporting " + str(clip_supporting_name) + " Size " + str(boxcover_support_size))
+    logger.debug("Gravity " + str(gravity) + " Alignment " + str(item_alignment))
 
     #===========================================================================
     # Make Boxcover
@@ -288,18 +289,30 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     REMOVE_IMG = finaldestination +  "/" + str(edgeid)  + str(item_suffix) + str(boxcover_back_suffix) + item_ext
     BOX_PSD = "'"  + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + ".psd'"
     BOX_IMG = "'" + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + item_ext +"'"
-    
+    item_width_delta = item_width - 64
+    item_height_delta = item_height - 100
     
     # Create Box Cover Command Template
     CMD_TEMPLATE = "$CONVERT -size ${WIDTH}x${HEIGHT} -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off"
     CMD_TEMPLATE = CMD_TEMPLATE + "\( -label 'image' $IMAGENAME \) "
     CMD_TEMPLATE = CMD_TEMPLATE + ""
     # Fix this soon
+    CMD_TEMPLATE =  '''
+   $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \) \
+       \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \) \
+        -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"Edge Interactive Collector\\'s scene ${EDGEID}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \
+        -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x120 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \
+        -label 'supporting'   \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font  ${FONT} -pointsize ${SUPPORTINGSIZE} -fill ${COLOR} label:'${SUPPORTING}' -splice x360 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \
+        -label 'shorttitle' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity west -font ${FONT} -interline-spacing -60 -pointsize ${SHORTTITLESIZE} -fill ${COLOR} label:'${SHORTTITLE}'   \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \
+        -label 'edgeid' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity Southwest -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'${EDGEID}' \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \
+        -label 'logo' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity SouthEast -font /edge/JobCard2/font/ArialBlack.ttf -pointsize ${EDGEIDSIZE} -interline-spacing -10 -fill ${COLOR} label:'EDGE    \\nInteractive' \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \
+        -label 'blank' \(  -size 960x1948  -background transparent  -gravity SouthEast -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'' \) \
+        -gravity center -extent 1024x2048  ${BOXPSD};  $CONVERT $BOXPSD  -flatten $BOXIMG
+    '''
     
     
     
-    
-    CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext, DENSITY=boxcover_density)                                             
+    CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext, DENSITY=boxcover_density, FONT=boxcover_font, HEIGHT_DELTA=item_height_delta, WIDTH_DELTA=item_width_delta, SHORTTITLE=boxcover_shorttitle, STAR=all_star, SUPPORTING=clip_supporting_name,TITLESIZE=boxcover_title_size,STARSIZE=boxcover_star_size,SUPPORTINGSIZE=boxcover_support_size,SHORTTITLESIZE=boxcover_shortitle_size,EDGEIDSIZE=boxcover_edgeid_size,LOGOSIZE=boxcover_edgeid_size,BOXPSD=BOX_PSD,COLOR=boxcover_font_color,BOXIMG=BOX_IMG)                                             
     
     
     logger.debug("Box create command: " + str(CMD))
