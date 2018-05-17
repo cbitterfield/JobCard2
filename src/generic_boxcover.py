@@ -256,7 +256,7 @@ USAGE
             if noexec:
                 command[command_name] = subprocess.Popen("echo", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             else:
-                logger.warning("Running Command - " + str(command_name))  
+                logger.debug("Running Command - " + str(command_name))  
                 command[command_name] = subprocess.Popen(CMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)       
                 logger.info( "COMMAND" + command_name + " for "+ edgeid + " Started" )
                 
