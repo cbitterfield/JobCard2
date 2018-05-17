@@ -320,7 +320,7 @@ USAGE
 
             CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, TITLE_GRAVITY=titlegravity, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext, DENSITY=boxcover_density, FONT=boxcover_font, HEIGHT_DELTA=item_height_delta, WIDTH_DELTA=item_width_delta, TITLE=boxcover_title, SHORTTITLE=boxcover_shorttitle, STAR=all_star, SUPPORTING=clip_supporting_name,TITLESIZE=boxcover_title_size,STARSIZE=boxcover_star_size,SUPPORTINGSIZE=boxcover_support_size,SHORTTITLESIZE=boxcover_shortitle_size,EDGEIDSIZE=boxcover_edgeid_size,LOGOSIZE=boxcover_edgeid_size,BOXPSD=BOX_PSD,COLOR=boxcover_font_color,BOXIMG=BOX_IMG)                                             
                 
-            logger.info(CMD_TEMPLATE)   
+            logger.debug(CMD_TEMPLATE)   
             logger.debug("Box create command: " + str(CMD))
         
             # 
