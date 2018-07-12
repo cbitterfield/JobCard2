@@ -27,6 +27,7 @@ import subprocess
 import csv
 from string import Template
 
+
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 
@@ -287,6 +288,7 @@ USAGE
             REMOVE_IMG = finaldestination +  "/" + str(edgeid)  + str(item_suffix) + str(boxcover_back_suffix) + item_ext
             BOX_PSD = "'"  + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + ".psd'"
             BOX_IMG = "'" + finaldestination +  "/" + str(edgeid)  + str(item_suffix) + item_ext +"'"
+            REMOVE_PSD = finaldestination +  "/" + str(edgeid)  + str(item_suffix) + '.psd'
             item_width_delta = item_width - 64
             item_height_delta = item_height - 100
 
@@ -342,14 +344,26 @@ USAGE
                     logger.info(str(command_name) + " Completed, returned Status: " + str(command_status[command_name]))
                     logger.info("Removing tempfile " + str(RESIZE_IMG))
                     os.remove(REMOVE_IMG)
+                   
+                        
                 else:
                     logger.error(str(command_name) + "failed, with Status:"+ str(command_status[command_name]))
                     logger.error("Error Message: " + str(stdoutdata))
                     logger.error("Error Message: " + str(stderrdata))
                     Error = True
 
-
-
+                logger.info("Removing PSD files " + REMOVE_PSD)
+                try:
+                    if os.path.isfile (BOX_PSD):
+                        logger.warn("File Exists " + str(REMOVE_PSD))
+                    else:
+                        logger.warn("File not found " + str(REMOVE_PSD))
+                        for x in os.listdir(finaldestination):
+                            print x
+                                    
+                    os.remove(REMOVE_PSD)
+                except Exception, e:
+                    print "Exception" + str(e)
 
 
 

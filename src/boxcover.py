@@ -1,39 +1,57 @@
-#-*- coding: utf-8 -*-
-'''
-newmodule -- shortdesc
+#!/usr/bin/env python3
+#===============================================================================
+SHORTDESC = "PROGRAM TO MAKE BOXCOVERS"
 
-newmodule is a description
+DESCRIPTION = """
 
 It defines classes_and_methods
-
+ 
 @author:     Colin Bitterfield
-
+ 
 @copyright:  2017 Edge Intereactive. All rights reserved.
-
+ 
 @license:    license
 
 @contact:    colin@bitterfield.com
-@deffield    updated: 12/26/2017
-'''
+@deffield    updated: 07/12/2018
+"""
+#===============================================================================
+
+#===============================================================================
+# Set Global Variables
+#===============================================================================
+__all__ = []
+__version__ = 0.1
+__date__ = '2017-12-10'
+__updated__ = '2018-07-12'
+
+DEBUG = False
+TEST = False
+NOEXEC = False
+
 #===============================================================================
 # Import 
 #===============================================================================
 
 import os
+import sys
 from string import Template
 import logging
 logger = logging.getLogger(__name__)
 
 # Additional Libraries
-from string import Template
 import subprocess
 import task
 
+# Import CLI parsing
+from argparse import ArgumentParser
+from argparse import RawDescriptionHelpFormatter
 
 
 
 
-def produce(dest_vol, object, jobcard, config, volume, noexec):
+
+def produce(dest_vol, target, jobcard, config, volume, noexec):
     Error = False
     
     #===========================================================================
@@ -53,9 +71,9 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     
     try:
-        object_name, object_number = object.split(".")
+        object_name, object_number = target.split(".")
     except:
-        object_name = object
+        object_name = target
         object_number = "0"
     
     #===========================================================================
@@ -63,19 +81,19 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     logger.debug("Set item key value pairs")
     try:
-        item_type = jobcard[object]['type'] if 'type' in jobcard[object] else None
-        item_action = jobcard[object]['action'] if 'action' in jobcard[object] else None
-        item_src = jobcard[object]['src'] if 'src' in jobcard[object] else None
-        item_alignment = jobcard[object]['alignment'] if 'alignment' in jobcard[object] else None
-        item_name = jobcard[object]['name'] if 'name' in jobcard[object] else None
-        item_dir = jobcard[object]['dir'] if 'dir' in jobcard[object] else None
-        item_thumbnail = jobcard[object]['thumbnail'] if 'thumbnail' in jobcard[object] else False
-        item_watermark = jobcard[object]['watermark'] if 'watermark' in jobcard[object] else False
-        item_suffix = jobcard[object]['suffix'] + str(object_number) if 'suffix' in jobcard[object] else "_" + str(object_number)
-        item_ext = jobcard[object]['ext'] if 'ext' in jobcard[object] else None
-        item_width = jobcard[object]['set_width'] if 'set_width' in jobcard[object] else 3724
-        item_height = jobcard[object]['set_height'] if 'set_height' in jobcard[object] else 5616
-        item_kbps = jobcard[object]['set_kbps'] if 'set_kbps' in jobcard[object] else None
+        item_type = jobcard[target]['type'] if 'type' in jobcard[target] else None
+        item_action = jobcard[target]['action'] if 'action' in jobcard[target] else None
+        item_src = jobcard[target]['src'] if 'src' in jobcard[target] else None
+        item_alignment = jobcard[target]['alignment'] if 'alignment' in jobcard[target] else None
+        item_name = jobcard[target]['name'] if 'name' in jobcard[target] else None
+        item_dir = jobcard[target]['dir'] if 'dir' in jobcard[target] else None
+        item_thumbnail = jobcard[target]['thumbnail'] if 'thumbnail' in jobcard[target] else False
+        item_watermark = jobcard[target]['watermark'] if 'watermark' in jobcard[target] else False
+        item_suffix = jobcard[target]['suffix'] + str(object_number) if 'suffix' in jobcard[target] else "_" + str(object_number)
+        item_ext = jobcard[target]['ext'] if 'ext' in jobcard[target] else None
+        item_width = jobcard[target]['set_width'] if 'set_width' in jobcard[target] else 3724
+        item_height = jobcard[target]['set_height'] if 'set_height' in jobcard[target] else 5616
+        item_kbps = jobcard[target]['set_kbps'] if 'set_kbps' in jobcard[target] else None
         
         
     except Exception as e: 
@@ -87,16 +105,16 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     
     try:
-        boxcover_font = config[object]['font'] if "font" in config[object] else None
-        boxcover_star_size = config[object]['star_size'] if "star_size" in config[object] else 150
-        boxcover_edgeid_size = config[object]['edgeid_size'] if "edgeid_size" in config[object] else 50
-        boxcover_support_size = config[object]['support_size'] if "support_size" in config[object] else 120
-        boxcover_shortitle_size = config[object]['shorttitle_size'] if "shorttitle_size" in config[object] else 120
-        boxcover_title_size = config[object]['title_size'] if "title_size" in config[object] else 160
-        boxcover_title_location = config[object]['title_location'] if "title_location" in config[object] else "right"
-        boxcover_font_color = config[object]['font_color'] if "font_color" in config[object] else "White"
-        boxcover_back_suffix = config[object]['back_suffix'] if "back_suffix" in config[object] else "_back"
-        boxcover_density = config[object]['density'] if "density" in config[object] else 72
+        boxcover_font = config[target]['font'] if "font" in config[target] else None
+        boxcover_star_size = config[target]['star_size'] if "star_size" in config[target] else 150
+        boxcover_edgeid_size = config[target]['edgeid_size'] if "edgeid_size" in config[target] else 50
+        boxcover_support_size = config[target]['support_size'] if "support_size" in config[target] else 120
+        boxcover_shortitle_size = config[target]['shorttitle_size'] if "shorttitle_size" in config[target] else 120
+        boxcover_title_size = config[target]['title_size'] if "title_size" in config[target] else 160
+        boxcover_title_location = config[target]['title_location'] if "title_location" in config[target] else "right"
+        boxcover_font_color = config[target]['font_color'] if "font_color" in config[target] else "White"
+        boxcover_back_suffix = config[target]['back_suffix'] if "back_suffix" in config[target] else "_back"
+        boxcover_density = config[target]['density'] if "density" in config[target] else 72
   
     except Exception as e: 
         logger.error("Boxcover values are not properly set, please correct error " + str(e))
@@ -211,7 +229,10 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     
     boxcover_title = clip_title.replace("'","\\'")
     boxcover_shorttitle = clip_shorttitle.replace(" ","\\n")
-    
+    if clip_supporting_name == 'NULL':
+        nosupport = True
+    else:
+        nosupport = False
     if item_alignment == 'left':
         boxcover_title = " " + boxcover_title
         if clip_star2:
@@ -293,27 +314,36 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     item_height_delta = item_height - 100
     
     # Create Box Cover Command Template
-    CMD_TEMPLATE = "$CONVERT -size ${WIDTH}x${HEIGHT} -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off"
-    CMD_TEMPLATE = CMD_TEMPLATE + "\( -label 'image' $IMAGENAME \) "
-    CMD_TEMPLATE = CMD_TEMPLATE + ""
-    # Fix this soon
-    CMD_TEMPLATE =  '''
-   $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \) \
-       \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \) \
-        -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"Edge Interactive Collector\\'s scene ${EDGEID}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \
-        -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x120 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \
-        -label 'supporting'   \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font  ${FONT} -pointsize ${SUPPORTINGSIZE} -fill ${COLOR} label:'${SUPPORTING}' -splice x360 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \
-        -label 'shorttitle' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity west -font ${FONT} -interline-spacing -60 -pointsize ${SHORTTITLESIZE} -fill ${COLOR} label:'${SHORTTITLE}'   \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \
-        -label 'edgeid' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity Southwest -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'${EDGEID}' \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \
-        -label 'logo' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity SouthEast -font /edge/JobCard2/font/ArialBlack.ttf -pointsize ${EDGEIDSIZE} -interline-spacing -10 -fill ${COLOR} label:'EDGE    \\nInteractive' \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \
-        -label 'blank' \(  -size 960x1948  -background transparent  -gravity SouthEast -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'' \) \
-        -gravity center -extent 1024x2048  ${BOXPSD};  $CONVERT $BOXPSD  -flatten $BOXIMG
-    '''
-    
-    
-    
-    CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext, DENSITY=boxcover_density, FONT=boxcover_font, HEIGHT_DELTA=item_height_delta, WIDTH_DELTA=item_width_delta, SHORTTITLE=boxcover_shorttitle, STAR=all_star, SUPPORTING=clip_supporting_name,TITLESIZE=boxcover_title_size,STARSIZE=boxcover_star_size,SUPPORTINGSIZE=boxcover_support_size,SHORTTITLESIZE=boxcover_shortitle_size,EDGEIDSIZE=boxcover_edgeid_size,LOGOSIZE=boxcover_edgeid_size,BOXPSD=BOX_PSD,COLOR=boxcover_font_color,BOXIMG=BOX_IMG)                                             
-    
+    CMD_TEMPLATE =  """
+            $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \)  \\
+            \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \)  \\
+            -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${TITLE_GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"${TITLE}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
+            -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x250 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
+            -label 'supporting'   \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font  ${FONT} -pointsize ${SUPPORTINGSIZE} -fill ${COLOR} label:'${SUPPORTING}' -splice x550 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
+            -label 'shorttitle' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity west -font ${FONT} -interline-spacing -75 -pointsize ${SHORTTITLESIZE} -fill ${COLOR} label:'${SHORTTITLE}'   \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
+            -label 'edgeid' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity Southwest -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'${EDGEID}' \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \\
+            -label 'logo' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity SouthEast -font /edge/JobCard2/font/ArialBlack.ttf -pointsize ${EDGEIDSIZE} -interline-spacing -10 -fill ${COLOR} label:'Edge/Picticon' \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \\
+            -label 'blank' \(  -size ${WIDTH}x${HEIGHT} -background transparent  -gravity SouthEast -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'' \)  \\
+            -gravity center -extent ${WIDTH}x${HEIGHT}  ${BOXPSD};  $CONVERT $BOXPSD  -flatten $BOXIMG
+            """
+
+    if nosupport:
+        CMD_TEMPLATE =  """
+        $CONVERT \( -size ${WIDTH}x${HEIGHT} -density $DENSITY -label 'background' -background transparent xc:none -depth 8 -set colorspace:auto-grayscale off  \)  \\
+        \( -label 'imageA' '${FINALDESTINATION}/${EDGEID}${SUFFIX}${BACK_SUFFIX}${EXT}' \)  \\
+        -label 'title' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${TITLE_GRAVITY} -font ${FONT} -pointsize ${TITLESIZE} -fill ${COLOR} label:"${TITLE}" \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
+        -label 'star' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity ${GRAVITY} -font ${FONT} -pointsize ${STARSIZE} -fill ${COLOR} label:'${STAR}' -splice x250 \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
+        -label 'shorttitle' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity west -font ${FONT} -interline-spacing -75 -pointsize ${SHORTTITLESIZE} -fill ${COLOR} label:'${SHORTTITLE}'   \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \) \\
+        -label 'edgeid' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity Southwest -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'${EDGEID}' \)  \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \\
+        -label 'logo' \( \( -size ${WIDTH_DELTA}x${HEIGHT_DELTA}  -background transparent  -gravity SouthEast -font /edge/JobCard2/font/ArialBlack.ttf -pointsize ${EDGEIDSIZE} -interline-spacing -10 -fill ${COLOR} label:'Edge/Picticon' \) \( +clone -background black -shadow 100x3+15+15  \) +swap -composite \)  \\
+        -label 'blank' \(  -size ${WIDTH}x${HEIGHT} -background transparent  -gravity SouthEast -font ${FONT} -pointsize ${EDGEIDSIZE} -fill ${COLOR} label:'' \)  \\
+        -gravity center -extent ${WIDTH}x${HEIGHT}  ${BOXPSD};  $CONVERT $BOXPSD  -flatten $BOXIMG
+        """
+
+
+
+    CMD = Template(CMD_TEMPLATE).safe_substitute(CONVERT=CONVERT, ITEM_SOURCE=item_source, WIDTH=item_width, HEIGHT=item_height, GRAVITY=gravity, TITLE_GRAVITY=boxcover_title_location, RESIZETO=resizeto, FINALDESTINATION=finaldestination, EDGEID=edgeid, SUFFIX=item_suffix, BACK_SUFFIX=boxcover_back_suffix, EXT=item_ext, DENSITY=boxcover_density, FONT=boxcover_font, HEIGHT_DELTA=item_height_delta, WIDTH_DELTA=item_width_delta, TITLE=boxcover_title, SHORTTITLE=boxcover_shorttitle, STAR=all_star, SUPPORTING=clip_supporting_name,TITLESIZE=boxcover_title_size,STARSIZE=boxcover_star_size,SUPPORTINGSIZE=boxcover_support_size,SHORTTITLESIZE=boxcover_shortitle_size,EDGEIDSIZE=boxcover_edgeid_size,LOGOSIZE=boxcover_edgeid_size,BOXPSD=BOX_PSD,COLOR=boxcover_font_color,BOXIMG=BOX_IMG)                                             
+      
     
     logger.debug("Box create command: " + str(CMD))
 
@@ -348,7 +378,7 @@ def produce(dest_vol, object, jobcard, config, volume, noexec):
     return(Error)
 
 
-def exists(dest_vol, object, jobcard, config, volume, noexec):
+def exists(dest_vol, target, jobcard, config, volume, noexec):
     Error = False
     
     #===========================================================================
@@ -368,9 +398,9 @@ def exists(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     
     try:
-        object_name, object_number = object.split(".")
+        object_name, object_number = target.split(".")
     except:
-        object_name = object
+        object_name = target
         object_number = "0"
     
     #===========================================================================
@@ -378,19 +408,19 @@ def exists(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     logger.debug("Set item key value pairs")
     try:
-        item_type = jobcard[object]['type'] if 'type' in jobcard[object] else None
-        item_action = jobcard[object]['action'] if 'action' in jobcard[object] else None
-        item_src = jobcard[object]['src'] if 'src' in jobcard[object] else None
-        item_alignment = jobcard[object]['alignment'] if 'alignment' in jobcard[object] else None
-        item_name = jobcard[object]['name'] if 'name' in jobcard[object] else None
-        item_dir = jobcard[object]['dir'] if 'dir' in jobcard[object] else None
-        item_thumbnail = jobcard[object]['thumbnail'] if 'thumbnail' in jobcard[object] else False
-        item_watermark = jobcard[object]['watermark'] if 'watermark' in jobcard[object] else False
-        item_suffix = jobcard[object]['suffix'] + str(object_number) if 'suffix' in jobcard[object] else "_" + str(object_number)
-        item_ext = jobcard[object]['ext'] if 'ext' in jobcard[object] else None
-        item_width = jobcard[object]['set_width'] if 'set_width' in jobcard[object] else None
-        item_height = jobcard[object]['set_height'] if 'set_height' in jobcard[object] else None
-        item_kbps = jobcard[object]['set_kbps'] if 'set_kbps' in jobcard[object] else None
+        item_type = jobcard[target]['type'] if 'type' in jobcard[target] else None
+        item_action = jobcard[target]['action'] if 'action' in jobcard[target] else None
+        item_src = jobcard[target]['src'] if 'src' in jobcard[target] else None
+        item_alignment = jobcard[target]['alignment'] if 'alignment' in jobcard[target] else None
+        item_name = jobcard[target]['name'] if 'name' in jobcard[target] else None
+        item_dir = jobcard[target]['dir'] if 'dir' in jobcard[target] else None
+        item_thumbnail = jobcard[target]['thumbnail'] if 'thumbnail' in jobcard[target] else False
+        item_watermark = jobcard[target]['watermark'] if 'watermark' in jobcard[target] else False
+        item_suffix = jobcard[target]['suffix'] + str(object_number) if 'suffix' in jobcard[target] else "_" + str(object_number)
+        item_ext = jobcard[target]['ext'] if 'ext' in jobcard[target] else None
+        item_width = jobcard[target]['set_width'] if 'set_width' in jobcard[target] else None
+        item_height = jobcard[target]['set_height'] if 'set_height' in jobcard[target] else None
+        item_kbps = jobcard[target]['set_kbps'] if 'set_kbps' in jobcard[target] else None
         
         
     except Exception as e: 
@@ -402,15 +432,15 @@ def exists(dest_vol, object, jobcard, config, volume, noexec):
     #===========================================================================
     
     try:
-        boxcover_font = config[object]['font'] if "font" in config[object] else None
-        boxcover_star_size = config[object]['star_size'] if "star_size" in config[object] else 150
-        boxcover_edgeid_size = config[object]['edgeid_size'] if "edgeid_size" in config[object] else 50
-        boxcover_support_size = config[object]['support_size'] if "support_size" in config[object] else 120
-        boxcover_shortitle_size = config[object]['shorttitle_size'] if "shorttitle_size" in config[object] else 120
-        boxcover_title_size = config[object]['title_size'] if "title_size" in config[object] else 160
-        boxcover_title_location = config[object]['title_location'] if "title_location" in config[object] else "right"
-        boxcover_font_color = config[object]['font_color'] if "font_color" in config[object] else "White"
-        boxcover_back_suffix = config[object]['back_suffix'] if "back_suffix" in config[object] else "_back"
+        boxcover_font = config[target]['font'] if "font" in config[target] else None
+        boxcover_star_size = config[target]['star_size'] if "star_size" in config[target] else 150
+        boxcover_edgeid_size = config[target]['edgeid_size'] if "edgeid_size" in config[target] else 50
+        boxcover_support_size = config[target]['support_size'] if "support_size" in config[target] else 120
+        boxcover_shortitle_size = config[target]['shorttitle_size'] if "shorttitle_size" in config[target] else 120
+        boxcover_title_size = config[target]['title_size'] if "title_size" in config[target] else 160
+        boxcover_title_location = config[target]['title_location'] if "title_location" in config[target] else "right"
+        boxcover_font_color = config[target]['font_color'] if "font_color" in config[target] else "White"
+        boxcover_back_suffix = config[target]['back_suffix'] if "back_suffix" in config[target] else "_back"
   
     except Exception as e: 
         logger.error("Boxcover values are not properly set, please correct error " + str(e))
@@ -512,7 +542,116 @@ def exists(dest_vol, object, jobcard, config, volume, noexec):
 
 
 
-def ignore(dest_vol, object, jobcard, config, volume, noexec):
+def ignore(dest_vol, target, jobcard, config, volume, noexec):
     Error = False
     logger.warn("Ignoring action " + str(object))
     return(Error)
+
+
+def main(argv=None):
+    '''Command line options.'''
+
+    if argv is None:
+        argv = sys.argv
+    else:
+        sys.argv.extend(argv)
+
+    program_name = os.path.basename(sys.argv[0])
+    program_version = "v%s" % __version__
+    program_build_date = str(__updated__)
+    program_version_message = '%s (%s)' % (program_version, program_build_date)
+    program_shortdesc = SHORTDESC
+    program_license = '''%s
+    
+  Created by Colin Bitterfield on %s.
+  Copyright 2017 Edge Intereactive. All rights reserved.
+
+  Licensed under the Apache License 2.0
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Distributed on an "AS IS" basis without warranties
+  or conditions of any kind, either express or implied.
+
+USAGE
+''' % (program_shortdesc, str(__date__))
+    
+    try:
+        # Setup argument parser
+        parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
+        parser.add_argument("-c","--configfile", dest="config", default="config.yaml", help="use config file, default is config.yml in working dir")
+        parser.add_argument("-l","--log", action="store", help="Write Log to location provided, if no file provided use jobcard name and put in local dir" )
+        parser.add_argument("-j","--jobcard", action="store", help="task card" )
+        parser.add_argument("-n","--noexec", action="store_true", default="False", help="Do not run commands on the OS; echo the command on the OS only" )
+        parser.add_argument("-t","--test", action="store_true", help="Test/Validate the Jobcard and exit" )
+        parser.add_argument("-d","--debug", action="store", default="INFO", help="set the debug level [INFO, WARN, ERROR, CRITICAL, DEBUG" )
+        parser.add_argument("-xp","--noproduct", action="store_true", default="False", help="Don't build products" )
+        parser.add_argument("-xc","--nocomponent", action="store_true", default="False", help="Don't build components" )
+        parser.add_argument("-sc","--singlecomponent", dest="singlecomponent", action="store", default="False", help="Only work on a single component, adds -xp by default")
+        parser.add_argument("-v","--version", dest="showversion", action="store_true", help="Display version and exit")
+        parser.add_argument("-a","--action", dest="action", action="store_true", default = 'CREATE' ,help="Action = [CREATE | EXISTS | IGNORE")
+        
+
+    except KeyboardInterrupt:
+        ### handle keyboard interrupt ###
+        return 0
+    
+    except Exception as e:
+        print ('Error ' + str(e))
+        indent = len(program_name) * " "
+        sys.stderr.write(program_name + ": " + repr(e) + "\n")
+        sys.stderr.write(indent + "  for help use --help")
+        return 2
+        
+        
+    # Process arguments
+    args = parser.parse_args()
+    
+    if args.showversion == True:
+        print(program_name)
+        print(program_version_message)
+        return 0
+    
+    configfile = args.config
+    logfile = args.log
+    jobcardfile = args.jobcard
+    NOEXEC = args.noexec if args.noexec else False
+    TEST = args.test if args.test else False
+    if args.debug:
+        DEBUG = True
+        DEBUGLEVEL = args.debug
+    else:
+        DEBUG = False
+        DEBUGLEVEL = 'INFO'
+    NOPRODUCT = args.noproduct if args.noproduct else False
+    NOCOMPONENT = args.nocomponent if args.nocomponent else False
+    SINGLECOMPONET = args.singlecomponent if args.singlecomponent else False  
+    ACTION = args.action if args.action else 'CREATE' 
+    
+    
+    
+     
+    #===============================================================================
+    # Setup  Logging
+    #===============================================================================
+    import logging
+    import logging.config 
+    logger = logging.getLogger(__name__)
+    
+    
+    
+    if logfile == None:
+        logging.basicConfig(format='%(asctime)s %(name)s:%(levelname)s:%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=DEBUGLEVEL)
+        
+    else:
+        logging.basicConfig(filename=args.log,format='%(asctime)s %(name)s:%(levelname)s:%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=DEBUGLEVEL)
+        
+    logger.debug('CLI Arguements: ' + str(args))
+    logger.info("Starting " + str(program_name)) 
+    
+    return 0    
+
+
+if __name__ == '__main__': main()
+    
+
+

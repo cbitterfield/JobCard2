@@ -57,7 +57,7 @@ class CLIError(Exception):
     def __unicode__(self):
         return self.msg
 
-def main(argv=None): # IGNORE:C0111
+def main(argv=None): 
     '''Command line options.'''
 
     if argv is None:
@@ -267,18 +267,5 @@ if __name__ == "__main__":
         sys.argv.append("-h")
         sys.argv.append("-v")
         sys.argv.append("-r")
-    if TESTRUN:
-        import doctest
-        doctest.testmod()
-    if PROFILE:
-        import cProfile
-        import pstats
-        profile_filename = 'jobrun2_profile.txt'
-        cProfile.run('main()', profile_filename)
-        statsfile = open("profile_stats.txt", "wb")
-        p = pstats.Stats(profile_filename, stream=statsfile)
-        stats = p.strip_dirs().sort_stats('cumulative')
-        stats.print_stats()
-        statsfile.close()
-        sys.exit(0)
+    
     sys.exit(main())

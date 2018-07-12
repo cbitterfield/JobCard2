@@ -154,7 +154,7 @@ def filetransfer(username, password, host, filename, destination):
  
 def test(test_text):
     
-    print "Test"
+    print ("Test")
     
     return(test)   
 
